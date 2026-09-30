@@ -2,6 +2,7 @@
 using Meanders.Tools.Core;
 using System;
 using System.Drawing;
+using GH_IO.Serialization;
 
 namespace Meanders.Tools.Grasshopper.Components
 {
@@ -164,14 +165,19 @@ namespace Meanders.Tools.Grasshopper.Components
 
 
             foreach (
-                ME_UnitConverter.LengthUnit unit
-                in Enum.GetValues(
-                    typeof(ME_UnitConverter.LengthUnit)))
+    ME_UnitConverter.LengthUnit unit
+    in Enum.GetValues(
+        typeof(ME_UnitConverter.LengthUnit)))
             {
                 var item =
                     new System.Windows.Forms.ToolStripMenuItem(
                         unit.ToString());
 
+                ME_UnitConverter.LengthUnit currentUnit =
+                    from ? _fromUnit : _toUnit;
+
+                item.Checked =
+                    unit == currentUnit;
 
                 item.Click += (sender, e) =>
                 {
@@ -184,7 +190,6 @@ namespace Meanders.Tools.Grasshopper.Components
 
                     ExpireSolution(true);
                 };
-
 
                 parent.DropDownItems.Add(item);
             }
@@ -205,6 +210,49 @@ namespace Meanders.Tools.Grasshopper.Components
             get { return null; }
         }
 
+        public override bool Write(GH_IWriter writer)
+        {
+            writer.SetInt32(
+                "FromUnit",
+                (int)_fromUnit);
+
+            writer.SetInt32(
+                "ToUnit",
+                (int)_toUnit);
+
+            writer.SetBoolean(
+                "Invert",
+                _invert);
+
+            return base.Write(writer);
+        }
+
+        public override bool Read(GH_IReader reader)
+        {
+            if (reader.ItemExists("FromUnit"))
+            {
+                _fromUnit =
+                    (ME_UnitConverter.LengthUnit)
+                    reader.GetInt32("FromUnit");
+            }
+
+            if (reader.ItemExists("ToUnit"))
+            {
+                _toUnit =
+                    (ME_UnitConverter.LengthUnit)
+                    reader.GetInt32("ToUnit");
+            }
+
+            if (reader.ItemExists("Invert"))
+            {
+                _invert =
+                    reader.GetBoolean("Invert");
+            }
+
+            UpdateMessage();
+
+            return base.Read(reader);
+        }
 
         public override Guid ComponentGuid
         {
