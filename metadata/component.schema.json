@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://meanders.tools/schemas/component.schema.json",
+  "title": "Meanders.Tools Component Metadata",
+  "description": "Schema for Grasshopper component metadata used by Meanders.Tools.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "guid",
+    "name",
+    "nickname",
+    "category",
+    "subcategory",
+    "status",
+    "introducedIn",
+    "lastUpdatedIn",
+    "deprecatedIn",
+    "description",
+    "inputs",
+    "outputs",
+    "source",
+    "documentation"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^me-[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "guid": {
+      "type": "string",
+      "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$"
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "nickname": { "type": "string", "minLength": 1 },
+    "category": { "type": "string", "const": "Meanders" },
+    "subcategory": {
+      "type": "string",
+      "enum": [
+        "Attributes",
+        "Objects",
+        "Geometry",
+        "Data",
+        "Utilities",
+        "Analysis",
+        "Fabrication",
+        "IO"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "idea",
+        "planned",
+        "design",
+        "development",
+        "testing",
+        "experimental",
+        "stable",
+        "deprecated"
+      ]
+    },
+    "introducedIn": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "lastUpdatedIn": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "deprecatedIn": {
+      "type": ["string", "null"],
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "releaseDate": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "lastUpdated": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "description": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["short", "long"],
+      "properties": {
+        "short": { "type": "string", "minLength": 1 },
+        "long": { "type": "string", "minLength": 1 }
+      }
+    },
+    "icon": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": ["string", "null"] },
+        "grasshopper": { "type": ["string", "null"] },
+        "website": { "type": ["string", "null"] },
+        "alt": { "type": ["string", "null"] }
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/port" }
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/port" }
+    },
+    "behavior": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "createsNewDataWhenInputMissing": { "type": "boolean" },
+        "modifiesCopyOfInput": { "type": "boolean" },
+        "requiresActiveRhinoDocument": { "type": "boolean" },
+        "runtimeWarnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "runtimeErrors": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "namespace", "file"],
+      "properties": {
+        "class": { "type": "string", "minLength": 1 },
+        "namespace": { "type": "string", "minLength": 1 },
+        "file": { "type": "string", "minLength": 1 }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "uniqueItems": true
+    },
+    "documentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slug", "status"],
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^me-[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["missing", "draft", "review", "complete"]
+        },
+        "examples": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "relatedComponents": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^me-[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rhino": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "grasshopper": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["windows", "macos"]
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "port": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "index",
+        "name",
+        "nickname",
+        "type",
+        "access",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nickname": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "number",
+            "integer",
+            "boolean",
+            "text",
+            "color",
+            "point",
+            "vector",
+            "curve",
+            "surface",
+            "brep",
+            "mesh",
+            "subd",
+            "geometry",
+            "generic",
+            "ME_Object",
+            "ME_Attribute"
+          ]
+        },
+        "acceptedTypes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        },
+        "access": {
+          "type": "string",
+          "enum": ["item", "list", "tree"]
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "default": {},
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

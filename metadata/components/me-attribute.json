@@ -1,4 +1,6 @@
 {
+  "$schema": "../component.schema.json",
+
   "id": "me-attribute",
   "guid": "C91E7F42-5A63-4D88-B2E1-06F4A9C73D15",
 
@@ -10,8 +12,10 @@
 
   "status": "development",
 
-  "version": "0.1.0",
   "introducedIn": "0.1.0",
+  "lastUpdatedIn": "0.1.0",
+  "deprecatedIn": null,
+
   "releaseDate": null,
   "lastUpdated": "2026-09-30",
 
@@ -181,14 +185,7 @@
     "Rhino.DocObjects.ObjectAttributes"
   ],
 
-  "tags": [
-    "attributes",
-    "metadata",
-    "rhino",
-    "user-text",
-    "layer",
-    "color"
-  ],
+  "tags": ["attributes", "metadata", "rhino", "user-text", "layer", "color"],
 
   "documentation": {
     "slug": "me-attribute",
@@ -198,14 +195,8 @@
   },
 
   "compatibility": {
-    "rhino": [
-      "7"
-    ],
-    "grasshopper": [
-      "7"
-    ],
-    "platforms": [
-      "windows"
-    ]
+    "rhino": ["7"],
+    "grasshopper": ["7"],
+    "platforms": ["windows"]
   }
 }
