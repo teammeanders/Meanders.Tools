@@ -6,17 +6,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\metadata\**\*" />
-		<None Include="..\docs\**\*" />
+		<None Include="..\README.md" />
 		<None Include="..\ROADMAP.md" />
 		<None Include="..\CHANGELOG.md" />
-		<None Include="..\README.md" />
-	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="docs\components\" />
-	  <Folder Include="docs\concepts\" />
-	  <Folder Include="docs\getting-started\" />
+		<None Include="..\metadata\**\*" />
+		<None Include="..\docs\**\*" />
 	</ItemGroup>
 
 </Project>
