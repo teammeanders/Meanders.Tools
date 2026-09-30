@@ -2,6 +2,7 @@
 using Grasshopper.Kernel.Types;
 using Meanders.Tools.Core;
 using Meanders.Tools.Grasshopper.Goo;
+using Meanders.Tools.Plugin;
 using Rhino;
 using Rhino.DocObjects;
 using System;
@@ -233,10 +234,8 @@ namespace Meanders.Tools.Grasshopper.Components
             get { return GH_Exposure.primary; }
         }
 
-        protected override Bitmap Icon
-        {
-            get { return null; }
-        }
+        protected override Bitmap Icon =>
+    MeandersIconLoader.Load("me-attribute.png");
 
         public override Guid ComponentGuid
         {

@@ -1,0 +1,308 @@
+{
+  "components": [
+    {
+      "id": "me-attribute",
+      "guid": "C91E7F42-5A63-4D88-B2E1-06F4A9C73D15",
+      "name": "ME Attribute",
+      "nickname": "ME Attr",
+      "category": "Meanders",
+      "subcategory": "Attributes",
+      "status": "stable",
+      "introducedIn": "0.1.0",
+      "description": {
+        "short": "Create or modify Meanders object attributes.",
+        "long": "Creates a new Meanders attribute object or modifies an existing ME Attribute or Rhino ObjectAttributes instance. The component supports object name, layer assignment, object color, and Rhino user text key-value pairs."
+      },
+      "icon": "me-attribute.png",
+      "inputs": [
+        {
+          "name": "Existing Attributes",
+          "nickname": "A",
+          "type": "generic",
+          "access": "item",
+          "optional": true,
+          "description": "Existing ME Attribute or Rhino ObjectAttributes to modify."
+        },
+        {
+          "name": "Keys",
+          "nickname": "K",
+          "type": "text",
+          "access": "list",
+          "optional": true,
+          "description": "User text keys."
+        },
+        {
+          "name": "Values",
+          "nickname": "V",
+          "type": "text",
+          "access": "list",
+          "optional": true,
+          "description": "User text values corresponding to the supplied keys."
+        },
+        {
+          "name": "Name",
+          "nickname": "N",
+          "type": "text",
+          "access": "item",
+          "optional": true,
+          "description": "Rhino object name."
+        },
+        {
+          "name": "Layer",
+          "nickname": "L",
+          "type": "text",
+          "access": "item",
+          "optional": true,
+          "description": "Full Rhino layer path to assign to the object attributes."
+        },
+        {
+          "name": "Object Color",
+          "nickname": "Oc",
+          "type": "color",
+          "access": "item",
+          "optional": true,
+          "description": "Object display color stored in the Rhino object attributes."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Attributes",
+          "nickname": "A",
+          "type": "ME_Attribute",
+          "access": "item",
+          "description": "Resulting Meanders attribute object."
+        },
+        {
+          "name": "Keys",
+          "nickname": "K",
+          "type": "text",
+          "access": "list",
+          "description": "User text keys stored in the resulting attributes."
+        },
+        {
+          "name": "Values",
+          "nickname": "V",
+          "type": "text",
+          "access": "list",
+          "description": "User text values stored in the resulting attributes."
+        },
+        {
+          "name": "Name",
+          "nickname": "N",
+          "type": "text",
+          "access": "item",
+          "description": "Object name stored in the resulting attributes."
+        },
+        {
+          "name": "Layer",
+          "nickname": "L",
+          "type": "text",
+          "access": "item",
+          "description": "Full Rhino layer path stored in the resulting attributes."
+        },
+        {
+          "name": "Object Color",
+          "nickname": "Oc",
+          "type": "color",
+          "access": "item",
+          "description": "Object color stored in the resulting attributes."
+        }
+      ],
+      "settings": [],
+      "errors": [
+        "Existing Attributes must be ME Attribute or Rhino ObjectAttributes.",
+        "Keys and Values must have the same number of items."
+      ],
+      "examples": [
+        {
+          "title": "Create fabrication attributes",
+          "description": "Create attributes with a name, layer, object color, and user text for later attachment to geometry."
+        }
+      ],
+      "notes": [
+        "Layer assignment requires an active Rhino document.",
+        "Existing attributes are duplicated before changes are applied.",
+        "Keys and Values must contain the same number of items."
+      ],
+      "related": ["me-attach-attribute", "me-detach-geometry"]
+    },
+    {
+      "id": "me-attach-attribute",
+      "guid": "E42B8C71-93F6-4A05-A6D2-5C17F9B83426",
+      "name": "ME Attach Attribute",
+      "nickname": "ME Attach",
+      "category": "Meanders",
+      "subcategory": "Objects",
+      "status": "stable",
+      "introducedIn": "0.1.0",
+      "description": {
+        "short": "Attach Meanders attributes to geometry or Grasshopper data.",
+        "long": "Creates ME Object instances by combining geometry or supported Grasshopper data with Meanders attributes while preserving the geometry input tree structure."
+      },
+      "icon": "me-attach-attribute.png",
+      "inputs": [
+        {
+          "name": "Geometry",
+          "nickname": "G",
+          "type": "generic",
+          "access": "tree",
+          "optional": false,
+          "description": "Geometry or supported Grasshopper data to combine with Meanders attributes."
+        },
+        {
+          "name": "Attributes",
+          "nickname": "A",
+          "type": "generic",
+          "access": "tree",
+          "optional": true,
+          "description": "ME Attribute or Rhino ObjectAttributes to attach to the supplied geometry."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "ME Objects",
+          "nickname": "O",
+          "type": "ME_Object",
+          "access": "tree",
+          "description": "ME Object instances containing geometry and attached attributes."
+        }
+      ],
+      "settings": [],
+      "errors": [],
+      "examples": [
+        {
+          "title": "Attach one attribute set to multiple geometry items",
+          "description": "Use a single attribute item with a geometry branch; the last available attribute is reused for remaining geometry items."
+        }
+      ],
+      "notes": [
+        "Geometry tree paths are preserved.",
+        "If an attribute branch is shorter than the geometry branch, the last available attribute is reused.",
+        "If no attributes are supplied, default empty object attributes are used."
+      ],
+      "related": ["me-attribute", "me-detach-geometry"]
+    },
+    {
+      "id": "me-detach-geometry",
+      "guid": "B7A8C3D2-8A7B-4B4A-9F25-6D2D7E8A9F11",
+      "name": "ME Detach Geometry",
+      "nickname": "ME Detach",
+      "category": "Meanders",
+      "subcategory": "Objects",
+      "status": "stable",
+      "introducedIn": "0.1.0",
+      "description": {
+        "short": "Detach geometry and attributes from Meanders objects.",
+        "long": "Separates ME Object instances into their stored geometry and Meanders attributes while preserving the original Grasshopper data tree paths."
+      },
+      "icon": "me-detach-geometry.png",
+      "inputs": [
+        {
+          "name": "ME Objects",
+          "nickname": "O",
+          "type": "ME_Object",
+          "access": "tree",
+          "optional": false,
+          "description": "Meanders objects to separate into geometry and attributes."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Geometry",
+          "nickname": "G",
+          "type": "generic",
+          "access": "tree",
+          "description": "Geometry stored inside each ME Object."
+        },
+        {
+          "name": "Attributes",
+          "nickname": "A",
+          "type": "ME_Attribute",
+          "access": "tree",
+          "description": "Meanders attributes stored inside each ME Object."
+        }
+      ],
+      "settings": [],
+      "errors": [],
+      "examples": [
+        {
+          "title": "Recover geometry and attributes",
+          "description": "Detach geometry and attributes from objects previously created with ME Attach Attribute."
+        }
+      ],
+      "notes": [
+        "Input tree paths are preserved.",
+        "Null ME Objects are skipped.",
+        "The input objects are not modified."
+      ],
+      "related": ["me-attach-attribute", "me-attribute"]
+    },
+    {
+      "id": "me-unit-converter",
+      "guid": "5A4E9E1D-4B3D-4D0B-8E4B-1C9F9F0D3A71",
+      "name": "ME Unit Converter",
+      "nickname": "ME Units",
+      "category": "Meanders",
+      "subcategory": "Utilities",
+      "status": "stable",
+      "introducedIn": "0.1.0",
+      "description": {
+        "short": "Convert values between supported length units.",
+        "long": "Converts numerical length values between millimeters, centimeters, meters, inches, and feet. Source unit, target unit, and conversion direction are controlled from the component context menu."
+      },
+      "icon": "me-unit-converter.png",
+      "inputs": [
+        {
+          "name": "Value",
+          "nickname": "X",
+          "type": "number",
+          "access": "item",
+          "optional": false,
+          "description": "Numeric length value to convert."
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Result",
+          "nickname": "Y",
+          "type": "number",
+          "access": "item",
+          "description": "Converted length value in the selected target unit."
+        }
+      ],
+      "settings": [
+        {
+          "name": "From Unit",
+          "type": "select",
+          "persistent": true,
+          "options": ["Millimeter", "Centimeter", "Meter", "Inch", "Foot"]
+        },
+        {
+          "name": "To Unit",
+          "type": "select",
+          "persistent": true,
+          "options": ["Millimeter", "Centimeter", "Meter", "Inch", "Foot"]
+        },
+        {
+          "name": "Invert",
+          "type": "boolean",
+          "persistent": true
+        }
+      ],
+      "errors": [],
+      "examples": [
+        {
+          "title": "Feet to millimeters",
+          "description": "Convert 12 feet to millimeters.",
+          "input": 12,
+          "output": 3657.6
+        }
+      ],
+      "notes": [
+        "The component currently supports length units only.",
+        "Context menu settings are stored inside the Grasshopper document."
+      ],
+      "related": []
+    }
+  ]
+}

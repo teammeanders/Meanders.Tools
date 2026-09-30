@@ -19,9 +19,10 @@ A component is considered complete only when all items below are satisfied.
 - Correct output descriptions
 - Correct output types
 - Component icon available
-- Component metadata JSON created
-- Documentation page created
+- Component data added to `data/components.json`
+- Documentation data completed in `data/components.json`
 - At least one usage example available
 - Tested in Rhino/Grasshopper
 - Version assigned
 - Release status defined
+- `python scripts/check-project.py` passes successfully

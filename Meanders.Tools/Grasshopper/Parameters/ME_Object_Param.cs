@@ -6,6 +6,7 @@ using Rhino.DocObjects;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Meanders.Tools.Plugin;
 
 namespace Meanders.Tools.Grasshopper.Parameters
 {
@@ -37,10 +38,8 @@ namespace Meanders.Tools.Grasshopper.Parameters
             }
         }
 
-        protected override Bitmap Icon
-        {
-            get { return null; }
-        }
+        protected override Bitmap Icon =>
+     MeandersIconLoader.Load("me-object-param.png");
 
         // ------------------------------------------------------------
         // Preview

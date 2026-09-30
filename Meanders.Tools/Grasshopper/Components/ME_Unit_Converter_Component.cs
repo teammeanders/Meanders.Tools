@@ -1,8 +1,9 @@
-﻿using Grasshopper.Kernel;
+﻿using GH_IO.Serialization;
+using Grasshopper.Kernel;
 using Meanders.Tools.Core;
+using Meanders.Tools.Plugin;
 using System;
 using System.Drawing;
-using GH_IO.Serialization;
 
 namespace Meanders.Tools.Grasshopper.Components
 {
@@ -205,10 +206,8 @@ namespace Meanders.Tools.Grasshopper.Components
         }
 
 
-        protected override Bitmap Icon
-        {
-            get { return null; }
-        }
+        protected override Bitmap Icon =>
+     MeandersIconLoader.Load("me-unit-converter.png");
 
         public override bool Write(GH_IWriter writer)
         {

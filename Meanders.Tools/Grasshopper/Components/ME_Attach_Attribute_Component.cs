@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using Meanders.Tools.Grasshopper.Parameters;
+using Meanders.Tools.Plugin;
 
 namespace Meanders.Tools.Grasshopper.Components
 
@@ -206,10 +207,8 @@ namespace Meanders.Tools.Grasshopper.Components
             get { return GH_Exposure.primary; }
         }
 
-        protected override Bitmap Icon
-        {
-            get { return null; }
-        }
+        protected override Bitmap Icon =>
+    MeandersIconLoader.Load("me-attach-attribute.png");
 
         public override Guid ComponentGuid
         {

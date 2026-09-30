@@ -27,6 +27,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Meanders.png" />
   </ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\Icons\*.png" />
+	</ItemGroup>	
   
   <ItemGroup>
     <PackageReference Include="Grasshopper" Version="7.0.20314.3001" Condition="$(TargetFramework) == 'net48'" ExcludeAssets="runtime" />
@@ -36,6 +40,10 @@
   
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Resources\icons\" />
   </ItemGroup>
   
   <Target Name="CopyPdbForMonoDebugging" AfterTargets="AfterBuild">

@@ -3,9 +3,10 @@ using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Meanders.Tools.Core;
 using Meanders.Tools.Grasshopper.Goo;
+using Meanders.Tools.Grasshopper.Parameters;
+using Meanders.Tools.Plugin;
 using System;
 using System.Drawing;
-using Meanders.Tools.Grasshopper.Parameters;
 
 
 namespace Meanders.Tools.Grasshopper.Components
@@ -104,10 +105,8 @@ namespace Meanders.Tools.Grasshopper.Components
         }
 
 
-        protected override Bitmap Icon
-        {
-            get { return null; }
-        }
+        protected override Bitmap Icon =>
+     MeandersIconLoader.Load("me-detach-geometry.png");
 
 
         public override Guid ComponentGuid
