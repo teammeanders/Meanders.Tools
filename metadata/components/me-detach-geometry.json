@@ -1,0 +1,105 @@
+{
+  "$schema": "../component.schema.json",
+
+  "id": "me-detach-geometry",
+  "guid": "B7A8C3D2-8A7B-4B4A-9F25-6D2D7E8A9F11",
+
+  "name": "ME Detach Geometry",
+  "nickname": "ME Detach",
+
+  "category": "Meanders",
+  "subcategory": "Objects",
+
+  "status": "development",
+
+  "introducedIn": "0.1.0",
+  "lastUpdatedIn": "0.1.0",
+  "deprecatedIn": null,
+
+  "releaseDate": null,
+  "lastUpdated": "2026-09-30",
+
+  "description": {
+    "short": "Detach geometry and attributes from Meanders objects.",
+    "long": "Separates ME Object instances into their stored geometry and Meanders attributes while preserving the original Grasshopper data tree paths."
+  },
+
+  "icon": {
+    "source": null,
+    "grasshopper": null,
+    "website": null,
+    "alt": "ME Detach Geometry component icon"
+  },
+
+  "inputs": [
+    {
+      "id": "me-objects",
+      "index": 0,
+      "name": "ME Objects",
+      "nickname": "O",
+      "type": "ME_Object",
+      "access": "tree",
+      "optional": false,
+      "default": null,
+      "description": "ME Object instances to separate into geometry and attributes."
+    }
+  ],
+
+  "outputs": [
+    {
+      "id": "geometry",
+      "index": 0,
+      "name": "Geometry",
+      "nickname": "G",
+      "type": "generic",
+      "access": "tree",
+      "description": "Geometry stored inside each ME Object."
+    },
+    {
+      "id": "attributes",
+      "index": 1,
+      "name": "Attributes",
+      "nickname": "A",
+      "type": "ME_Attribute",
+      "access": "tree",
+      "description": "Meanders attributes stored inside each ME Object."
+    }
+  ],
+
+  "behavior": {
+    "createsNewDataWhenInputMissing": false,
+    "modifiesCopyOfInput": false,
+    "requiresActiveRhinoDocument": false,
+    "runtimeWarnings": [],
+    "runtimeErrors": []
+  },
+
+  "source": {
+    "class": "ME_Detach_Geometry_Component",
+    "namespace": "Meanders.Tools.Grasshopper.Components",
+    "file": "Meanders.Tools/Grasshopper/Components/ME_Detach_Geometry_Component.cs"
+  },
+
+  "dependencies": [
+    "ME_Object",
+    "ME_Object_Goo",
+    "ME_Object_Param",
+    "ME_Attribute",
+    "ME_Attribute_Goo"
+  ],
+
+  "tags": ["object", "geometry", "attributes", "data-tree"],
+
+  "documentation": {
+    "slug": "me-detach-geometry",
+    "status": "draft",
+    "examples": [],
+    "relatedComponents": ["me-attach-attribute", "me-attribute"]
+  },
+
+  "compatibility": {
+    "rhino": ["7"],
+    "grasshopper": ["7"],
+    "platforms": ["windows"]
+  }
+}

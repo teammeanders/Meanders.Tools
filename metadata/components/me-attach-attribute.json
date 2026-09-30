@@ -1,0 +1,126 @@
+{
+  "$schema": "../component.schema.json",
+
+  "id": "me-attach-attribute",
+  "guid": "E42B8C71-93F6-4A05-A6D2-5C17F9B83426",
+
+  "name": "ME Attach Attribute",
+  "nickname": "ME Attach",
+
+  "category": "Meanders",
+  "subcategory": "Objects",
+
+  "status": "development",
+
+  "introducedIn": "0.1.0",
+  "lastUpdatedIn": "0.1.0",
+  "deprecatedIn": null,
+
+  "releaseDate": null,
+  "lastUpdated": "2026-09-30",
+
+  "description": {
+    "short": "Attach Meanders attributes to geometry or Grasshopper data.",
+    "long": "Creates ME Object instances by combining geometry or supported Grasshopper data with Meanders attributes. Geometry tree structure is preserved, and supplied attributes are matched to geometry items by branch and item index."
+  },
+
+  "icon": {
+    "source": null,
+    "grasshopper": null,
+    "website": null,
+    "alt": "ME Attach Attribute component icon"
+  },
+
+  "inputs": [
+    {
+      "id": "geometry",
+      "index": 0,
+      "name": "Geometry",
+      "nickname": "G",
+      "type": "generic",
+      "acceptedTypes": [
+        "ME_Object_Goo",
+        "Grasshopper.Kernel.Types.GH_Point",
+        "Grasshopper.Kernel.Types.GH_Curve",
+        "Grasshopper.Kernel.Types.GH_Brep",
+        "Grasshopper.Kernel.Types.GH_Surface",
+        "Grasshopper.Kernel.Types.GH_SubD",
+        "Grasshopper.Kernel.Types.GH_GeometryGroup",
+        "Grasshopper.Kernel.Types.GH_Mesh",
+        "Grasshopper.Kernel.Types.GH_Rectangle",
+        "Grasshopper.Kernel.Types.GH_Line",
+        "Grasshopper.Kernel.Types.GH_ObjectWrapper"
+      ],
+      "access": "tree",
+      "optional": false,
+      "default": null,
+      "description": "Geometry or supported Grasshopper data to combine with Meanders attributes."
+    },
+    {
+      "id": "attributes",
+      "index": 1,
+      "name": "Attributes",
+      "nickname": "A",
+      "type": "generic",
+      "acceptedTypes": [
+        "ME_Attribute",
+        "ME_Attribute_Goo",
+        "Rhino.DocObjects.ObjectAttributes"
+      ],
+      "access": "tree",
+      "optional": true,
+      "default": null,
+      "description": "Meanders attributes or Rhino ObjectAttributes to attach to the supplied geometry."
+    }
+  ],
+
+  "outputs": [
+    {
+      "id": "me-objects",
+      "index": 0,
+      "name": "ME Objects",
+      "nickname": "O",
+      "type": "ME_Object",
+      "access": "tree",
+      "description": "ME Object instances containing the supplied geometry and attached attributes."
+    }
+  ],
+
+  "behavior": {
+    "createsNewDataWhenInputMissing": false,
+    "modifiesCopyOfInput": true,
+    "requiresActiveRhinoDocument": false,
+    "runtimeWarnings": [],
+    "runtimeErrors": []
+  },
+
+  "source": {
+    "class": "ME_Attach_Attribute_Component",
+    "namespace": "Meanders.Tools.Grasshopper.Components",
+    "file": "Meanders.Tools/Grasshopper/Components/ME_Attach_Attribute_Component.cs"
+  },
+
+  "dependencies": [
+    "ME_Object",
+    "ME_Object_Goo",
+    "ME_Object_Param",
+    "ME_Attribute",
+    "ME_Attribute_Goo",
+    "Rhino.DocObjects.ObjectAttributes"
+  ],
+
+  "tags": ["object", "attributes", "geometry", "metadata", "data-tree"],
+
+  "documentation": {
+    "slug": "me-attach-attribute",
+    "status": "draft",
+    "examples": [],
+    "relatedComponents": ["me-attribute", "me-detach-geometry"]
+  },
+
+  "compatibility": {
+    "rhino": ["7"],
+    "grasshopper": ["7"],
+    "platforms": ["windows"]
+  }
+}

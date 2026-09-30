@@ -1,0 +1,90 @@
+{
+  "$schema": "../component.schema.json",
+
+  "id": "me-unit-converter",
+  "guid": "5A4E9E1D-4B3D-4D0B-8E4B-1C9F9F0D3A71",
+
+  "name": "ME Unit Converter",
+  "nickname": "ME Units",
+
+  "category": "Meanders",
+  "subcategory": "Utilities",
+
+  "status": "development",
+
+  "introducedIn": "0.1.0",
+  "lastUpdatedIn": "0.1.0",
+  "deprecatedIn": null,
+
+  "releaseDate": null,
+  "lastUpdated": "2026-09-30",
+
+  "description": {
+    "short": "Convert values between supported length units.",
+    "long": "Converts numerical length values between millimeters, centimeters, meters, inches, and feet. The source unit, target unit, and conversion direction are controlled from the component context menu."
+  },
+
+  "icon": {
+    "source": null,
+    "grasshopper": null,
+    "website": null,
+    "alt": "ME Unit Converter component icon"
+  },
+
+  "inputs": [
+    {
+      "id": "value",
+      "index": 0,
+      "name": "Value",
+      "nickname": "X",
+      "type": "number",
+      "access": "item",
+      "optional": false,
+      "default": null,
+      "description": "Numeric length value to convert."
+    }
+  ],
+
+  "outputs": [
+    {
+      "id": "result",
+      "index": 0,
+      "name": "Result",
+      "nickname": "Y",
+      "type": "number",
+      "access": "item",
+      "description": "Converted length value in the selected target unit."
+    }
+  ],
+
+  "behavior": {
+    "createsNewDataWhenInputMissing": false,
+    "modifiesCopyOfInput": false,
+    "requiresActiveRhinoDocument": false,
+    "runtimeWarnings": [],
+    "runtimeErrors": []
+  },
+
+  "source": {
+    "class": "ME_Unit_Converter_Component",
+    "namespace": "Meanders.Tools.Grasshopper.Components",
+    "file": "Meanders.Tools/Grasshopper/Components/ME_Unit_Converter_Component.cs"
+  },
+
+  "dependencies": ["ME_UnitConverter"],
+
+  "tags": ["units", "conversion", "length", "utilities"],
+
+  "documentation": {
+    "slug": "me-unit-converter",
+    "status": "draft",
+    "examples": [],
+    "relatedComponents": []
+  },
+
+  "compatibility": {
+    "rhino": ["7"],
+    "grasshopper": ["7"],
+    "platforms": ["windows"]
+  }
+}
