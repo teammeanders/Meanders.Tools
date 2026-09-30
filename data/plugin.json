@@ -1,11 +1,10 @@
 {
-  "$schema": "./plugin.schema.json",
   "id": "meanders-tools",
   "name": "Meanders.Tools",
   "displayName": "Meanders",
 
   "version": "0.1.0",
-  "status": "development",
+  "status": "stable",
 
   "description": {
     "short": "Design and workflow tools for Grasshopper and Rhino.",
@@ -44,8 +43,8 @@
 
   "release": {
     "current": "0.1.0",
-    "stable": null,
-    "releaseDate": null
+    "stable": "0.1.0",
+    "releaseDate": "2026-09-30"
   },
 
   "assembly": {
