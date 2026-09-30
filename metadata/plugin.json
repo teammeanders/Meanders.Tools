@@ -1,0 +1,55 @@
+{
+  "id": "meanders-tools",
+  "name": "Meanders.Tools",
+  "displayName": "Meanders",
+
+  "version": "0.1.0",
+  "status": "development",
+
+  "description": {
+    "short": "Design and workflow tools for Grasshopper and Rhino.",
+    "long": "Meanders.Tools is a Grasshopper plugin for Rhino that provides reusable tools for geometry, attributes, data, fabrication, and internal design workflows."
+  },
+
+  "author": {
+    "name": "Meanders",
+    "contact": ""
+  },
+
+  "repository": {
+    "provider": "github",
+    "owner": "teammeanders",
+    "name": "Meanders.Tools"
+  },
+
+  "compatibility": {
+    "rhino": ["7"],
+    "grasshopper": ["7"],
+    "platforms": ["windows"],
+    "frameworks": ["net48"]
+  },
+
+  "distribution": {
+    "channel": "internal",
+    "githubReleases": true,
+    "yak": false,
+    "installer": false
+  },
+
+  "documentation": {
+    "status": "draft",
+    "website": null
+  },
+
+  "release": {
+    "current": "0.1.0",
+    "stable": null,
+    "releaseDate": null
+  },
+
+  "assembly": {
+    "name": "Meanders.Tools",
+    "grasshopperName": "Meanders",
+    "assemblyGuid": "715d84fe-2a1e-42bc-851e-ec6ce26c0835"
+  }
+}
