@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Meanders.Tools.Plugin
 {
-    public class Meanders_toolsPriority : GH_AssemblyPriority
+    public class MeandersToolsPriority : GH_AssemblyPriority
     {
         public override GH_LoadingInstruction PriorityLoad()
         {

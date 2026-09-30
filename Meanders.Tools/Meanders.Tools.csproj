@@ -12,18 +12,13 @@
     <TargetExt>.gha</TargetExt>
     <NoWarn>NU1701</NoWarn>
   </PropertyGroup>
-  
-  <PropertyGroup>
-    <!-- Specifies information for Assembly and Yak -->
-    <Version>1.0</Version>
-    <Title>Meanders tools</Title>
-    <Company>Meanders tools Authors</Company>
-    <Description>Description of Meanders tools</Description>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Remove="ME_Object_Component.cs" />
-  </ItemGroup>
+
+	<PropertyGroup>
+		<Version>0.1.0</Version>
+		<Title>Meanders.Tools</Title>
+		<Company>Meanders</Company>
+		<Description>Design and workflow tools for Grasshopper and Rhino.</Description>
+	</PropertyGroup>
   
   <ItemGroup>
     <None Remove="Resources\Meanders.png" />

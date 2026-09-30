@@ -20,9 +20,9 @@ namespace Meanders.Tools.Grasshopper.Components
      : base(
          "ME Unit Converter",
          "ME Units",
-         "Convert between different measurement units.",
+         "Convert between supported length units.",
          "Meanders",
-         "Units")
+         "Utilities")
         {
             UpdateMessage();
         }

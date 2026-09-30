@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Meanders.Tools.Plugin
 {
-    public class Meanders_toolsInfo : GH_AssemblyInfo
+    public class MeandersToolsInfo : GH_AssemblyInfo
     {
         public override string Name => "Meanders";
 
@@ -17,7 +17,7 @@ namespace Meanders.Tools.Plugin
                 Stream stream =
                     Assembly.GetExecutingAssembly()
                     .GetManifestResourceStream(
-                        "Meanders_Tools.Resources.Meanders.png");
+                        "Meanders.Tools.Resources.Meanders.png");
 
                 if (stream == null)
                     return null;
