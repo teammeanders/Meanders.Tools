@@ -44,10 +44,6 @@
 	<Reference Include="System.Web.Extensions" />
   </ItemGroup>
   
-  <ItemGroup>
-    <Folder Include="Resources\icons\" />
-  </ItemGroup>
-  
   <Target Name="CopyPdbForMonoDebugging" AfterTargets="AfterBuild">
     <!-- Enable debugging in Rhino 6/7 on Mac -->
     <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFiles="$(TargetDir)$(TargetName).gha.pdb" Condition="$([MSBuild]::IsOSPlatform(OSX)) and $(TargetFramework.StartsWith('net4')) and Exists('$(TargetDir)$(TargetName).pdb')" />
