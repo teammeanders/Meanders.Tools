@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "canonical": true,
   "references": {
     "visualLanguage": "Grasshopper-native",
@@ -69,6 +69,81 @@
       4
     ]
   },
+  "semanticInterpretation": {
+    "sourceOfTruth": "component-documentation-json",
+    "requiredBeforeDesign": true,
+    "rule": "The icon must communicate what the component does, not merely which category it belongs to.",
+    "categoryIsNotMeaning": true,
+    "workflow": [
+      "Read the component documentation JSON.",
+      "Identify the component's primary functional purpose.",
+      "Identify the strongest visual representation of that purpose.",
+      "Optionally add at most one supporting concept.",
+      "Reduce the result to a strong Grasshopper-native silhouette.",
+      "Validate the concept at 24x24 before producing the documentation version."
+    ],
+    "functionalCategories": [
+      "geometry-creation",
+      "geometry-transformation",
+      "geometry-analysis",
+      "data-and-attributes",
+      "text-and-annotation",
+      "fabrication",
+      "utilities",
+      "parameters"
+    ],
+    "priority": {
+      "primaryConcept": "component-function",
+      "secondaryConcept": "supporting-context",
+      "category": "context-only"
+    },
+    "maxSupportingConcepts": 1
+  },
+  "semanticRules": {
+    "antiGenericIconRule": true,
+    "doNotUseCategoryAsPrimaryMetaphor": true,
+    "doNotUseGenericManufacturingSymbolWhenFunctionIsSpecific": true,
+    "primaryConceptMustComeFromDocumentation": true,
+    "doNotInventUnrelatedVisualMetaphors": true,
+    "doNotUseComponentNameAsVisualConcept": true,
+    "examples": {
+      "me-fab-text": {
+        "primaryConcept": "geometric-fabrication-text",
+        "secondaryConcept": "fabrication-notation",
+        "avoid": [
+          "generic-fabrication-symbol",
+          "CNC-machine",
+          "router",
+          "cutter",
+          "sheet-material",
+          "generic-arrow",
+          "generic-manufacturing-symbol"
+        ],
+        "guidance": "Represent the actual geometric text function using simplified glyph-like geometric strokes. Fabrication context may support the concept but must not replace the primary text-geometry concept."
+      }
+    }
+  },
+  "textAndAnnotation": {
+    "rule": "Text-related components should be represented through abstract geometric glyph structure rather than literal readable text.",
+    "literalTextAllowed": false,
+    "lettersAsReadableLabelsAllowed": false,
+    "glyphStructureAllowed": true,
+    "geometricStrokeLanguagePreferred": true,
+    "examples": {
+      "text-generation": "Use a short sequence of abstract geometric glyph strokes.",
+      "text-layout": "Use repeated glyph-like geometry or alignment structure.",
+      "text-analysis": "Use glyph or text-structure geometry combined with the relevant analysis concept."
+    }
+  },
+  "fabrication": {
+    "rule": "Fabrication is contextual unless fabrication itself is the primary function.",
+    "genericFabricationSymbolAsPrimary": false,
+    "machineMetaphorsAllowed": false,
+    "toolMetaphorsAllowed": false,
+    "materialMetaphorsAllowed": false,
+    "fabricationNotationAllowed": true,
+    "fabricationNotationIsSecondaryUnlessDocumentedOtherwise": true
+  },
   "component": {
     "sharedShell": false,
     "palette": "amber-orange",
@@ -78,7 +153,8 @@
       "me-attribute": "attribute/tag/property symbol",
       "me-attach-attribute": "geometry + attach/link/add",
       "me-detach-geometry": "geometry + separation",
-      "me-unit-converter": "measurement/ruler + two-way conversion"
+      "me-unit-converter": "measurement/ruler + two-way conversion",
+      "me-fab-text": "geometric text + fabrication notation"
     }
   },
   "parameter": {
@@ -110,6 +186,12 @@
     "simpleDownscaleOnly": false
   },
   "checklist": [
+    "read-component-documentation-first",
+    "identify-primary-functional-purpose",
+    "category-is-context-not-primary-meaning",
+    "choose-one-strong-semantic-concept",
+    "use-at-most-one-supporting-concept",
+    "do-not-use-generic-category-symbol",
     "correct-semantic-concept",
     "clear-at-24x24",
     "occupancy-between-75-and-85-percent",
@@ -120,6 +202,7 @@
     "grasshopper-native-style",
     "strong-silhouette",
     "no-text",
+    "no-readable-labels",
     "minimal-detail",
     "component-vs-param-grammar-correct",
     "correct-filename",
