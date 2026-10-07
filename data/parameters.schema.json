@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Meanders.Tools Parameter Data",
+  "type": "object",
+  "required": [
+    "id",
+    "guid",
+    "name",
+    "nickname",
+    "category",
+    "subcategory",
+    "status",
+    "introducedIn",
+    "description",
+    "icon",
+    "access",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "guid": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nickname": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subcategory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string"
+    },
+    "introducedIn": {
+      "type": "string"
+    },
+    "description": {
+      "type": "object",
+      "required": ["short", "long"],
+      "properties": {
+        "short": {
+          "type": "string"
+        },
+        "long": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "icon": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "settings": {
+      "type": "array"
+    },
+    "examples": {
+      "type": "array"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

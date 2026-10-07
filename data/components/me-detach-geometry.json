@@ -1,0 +1,55 @@
+{
+  "id": "me-detach-geometry",
+  "guid": "B7A8C3D2-8A7B-4B4A-9F25-6D2D7E8A9F11",
+  "name": "ME Detach Geometry",
+  "nickname": "ME Detach",
+  "category": "Meanders",
+  "subcategory": "Objects",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Detach geometry and attributes from Meanders objects.",
+    "long": "Separates ME Object instances into their stored geometry and Meanders attributes while preserving the original Grasshopper data tree paths."
+  },
+  "icon": "me-detach-geometry.png",
+  "inputs": [
+    {
+      "name": "ME Objects",
+      "nickname": "O",
+      "type": "ME_Object",
+      "access": "tree",
+      "optional": false,
+      "description": "Meanders objects to separate into geometry and attributes."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Geometry",
+      "nickname": "G",
+      "type": "generic",
+      "access": "tree",
+      "description": "Geometry stored inside each ME Object."
+    },
+    {
+      "name": "Attributes",
+      "nickname": "A",
+      "type": "ME_Attribute",
+      "access": "tree",
+      "description": "Meanders attributes stored inside each ME Object."
+    }
+  ],
+  "settings": [],
+  "errors": [],
+  "examples": [
+    {
+      "title": "Recover geometry and attributes",
+      "description": "Detach geometry and attributes from objects previously created with ME Attach Attribute."
+    }
+  ],
+  "notes": [
+    "Input tree paths are preserved.",
+    "Null ME Objects are skipped.",
+    "The input objects are not modified."
+  ],
+  "related": ["me-attach-attribute", "me-attribute"]
+}

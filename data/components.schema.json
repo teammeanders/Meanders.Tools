@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Meanders.Tools Component Data",
+  "type": "object",
+  "required": [
+    "id",
+    "guid",
+    "name",
+    "nickname",
+    "category",
+    "subcategory",
+    "status",
+    "introducedIn",
+    "description",
+    "icon"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "guid": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nickname": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subcategory": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string"
+    },
+    "introducedIn": {
+      "type": "string"
+    },
+    "description": {
+      "type": "object",
+      "required": ["short", "long"],
+      "properties": {
+        "short": {
+          "type": "string"
+        },
+        "long": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "icon": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/port"
+      }
+    },
+    "settings": {
+      "type": "array"
+    },
+    "examples": {
+      "type": "array"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "port": {
+      "type": "object",
+      "required": ["name", "nickname", "type", "access", "description"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "access": {
+          "type": "string"
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

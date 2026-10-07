@@ -1,0 +1,126 @@
+{
+  "id": "me-attribute",
+  "guid": "C91E7F42-5A63-4D88-B2E1-06F4A9C73D15",
+  "name": "ME Attribute",
+  "nickname": "ME Attr",
+  "category": "Meanders",
+  "subcategory": "Attributes",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Create or modify Meanders object attributes.",
+    "long": "Creates a new Meanders attribute object or modifies an existing ME Attribute or Rhino ObjectAttributes instance. The component supports object name, layer assignment, object color, and Rhino user text key-value pairs."
+  },
+  "icon": "me-attribute.png",
+  "inputs": [
+    {
+      "name": "Existing Attributes",
+      "nickname": "A",
+      "type": "generic",
+      "access": "item",
+      "optional": true,
+      "description": "Existing ME Attribute or Rhino ObjectAttributes to modify."
+    },
+    {
+      "name": "Keys",
+      "nickname": "K",
+      "type": "text",
+      "access": "list",
+      "optional": true,
+      "description": "User text keys."
+    },
+    {
+      "name": "Values",
+      "nickname": "V",
+      "type": "text",
+      "access": "list",
+      "optional": true,
+      "description": "User text values corresponding to the supplied keys."
+    },
+    {
+      "name": "Name",
+      "nickname": "N",
+      "type": "text",
+      "access": "item",
+      "optional": true,
+      "description": "Rhino object name."
+    },
+    {
+      "name": "Layer",
+      "nickname": "L",
+      "type": "text",
+      "access": "item",
+      "optional": true,
+      "description": "Full Rhino layer path to assign to the object attributes."
+    },
+    {
+      "name": "Object Color",
+      "nickname": "Oc",
+      "type": "color",
+      "access": "item",
+      "optional": true,
+      "description": "Object display color stored in the Rhino object attributes."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Attributes",
+      "nickname": "A",
+      "type": "ME_Attribute",
+      "access": "item",
+      "description": "Resulting Meanders attribute object."
+    },
+    {
+      "name": "Keys",
+      "nickname": "K",
+      "type": "text",
+      "access": "list",
+      "description": "User text keys stored in the resulting attributes."
+    },
+    {
+      "name": "Values",
+      "nickname": "V",
+      "type": "text",
+      "access": "list",
+      "description": "User text values stored in the resulting attributes."
+    },
+    {
+      "name": "Name",
+      "nickname": "N",
+      "type": "text",
+      "access": "item",
+      "description": "Object name stored in the resulting attributes."
+    },
+    {
+      "name": "Layer",
+      "nickname": "L",
+      "type": "text",
+      "access": "item",
+      "description": "Full Rhino layer path stored in the resulting attributes."
+    },
+    {
+      "name": "Object Color",
+      "nickname": "Oc",
+      "type": "color",
+      "access": "item",
+      "description": "Object color stored in the resulting attributes."
+    }
+  ],
+  "settings": [],
+  "errors": [
+    "Existing Attributes must be ME Attribute or Rhino ObjectAttributes.",
+    "Keys and Values must have the same number of items."
+  ],
+  "examples": [
+    {
+      "title": "Create fabrication attributes",
+      "description": "Create attributes with a name, layer, object color, and user text for later attachment to geometry."
+    }
+  ],
+  "notes": [
+    "Layer assignment requires an active Rhino document.",
+    "Existing attributes are duplicated before changes are applied.",
+    "Keys and Values must contain the same number of items."
+  ],
+  "related": ["me-attach-attribute", "me-detach-geometry"]
+}

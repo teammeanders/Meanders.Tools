@@ -1,4 +1,7 @@
 {
+  "$schema": "./components.schema.json",
+  "_generated": true,
+  "_generatedAt": "2026-10-07T16:18:52.094736+00:00",
   "components": [
     {
       "id": "me-attribute",
@@ -124,7 +127,10 @@
         "Existing attributes are duplicated before changes are applied.",
         "Keys and Values must contain the same number of items."
       ],
-      "related": ["me-attach-attribute", "me-detach-geometry"]
+      "related": [
+        "me-attach-attribute",
+        "me-detach-geometry"
+      ]
     },
     {
       "id": "me-attach-attribute",
@@ -180,7 +186,10 @@
         "If an attribute branch is shorter than the geometry branch, the last available attribute is reused.",
         "If no attributes are supplied, default empty object attributes are used."
       ],
-      "related": ["me-attribute", "me-detach-geometry"]
+      "related": [
+        "me-attribute",
+        "me-detach-geometry"
+      ]
     },
     {
       "id": "me-detach-geometry",
@@ -235,7 +244,10 @@
         "Null ME Objects are skipped.",
         "The input objects are not modified."
       ],
-      "related": ["me-attach-attribute", "me-attribute"]
+      "related": [
+        "me-attach-attribute",
+        "me-attribute"
+      ]
     },
     {
       "id": "me-unit-converter",
@@ -275,13 +287,25 @@
           "name": "From Unit",
           "type": "select",
           "persistent": true,
-          "options": ["Millimeter", "Centimeter", "Meter", "Inch", "Foot"]
+          "options": [
+            "Millimeter",
+            "Centimeter",
+            "Meter",
+            "Inch",
+            "Foot"
+          ]
         },
         {
           "name": "To Unit",
           "type": "select",
           "persistent": true,
-          "options": ["Millimeter", "Centimeter", "Meter", "Inch", "Foot"]
+          "options": [
+            "Millimeter",
+            "Centimeter",
+            "Meter",
+            "Inch",
+            "Foot"
+          ]
         },
         {
           "name": "Invert",
@@ -303,6 +327,62 @@
         "Context menu settings are stored inside the Grasshopper document."
       ],
       "related": []
+    }
+  ],
+  "parameters": [
+    {
+      "id": "me-attribute",
+      "guid": "B6C4D8A1-3E72-4F95-8C16-7A9E2D51F403",
+      "name": "ME Attribute",
+      "nickname": "ME Attr",
+      "category": "Meanders",
+      "subcategory": "Params",
+      "status": "stable",
+      "introducedIn": "0.1.0",
+      "description": {
+        "short": "Meanders Attribute parameter.",
+        "long": "A Grasshopper parameter for storing and passing Meanders Attribute data."
+      },
+      "icon": "me-attribute-param.png",
+      "access": "item",
+      "type": "ME_Attribute",
+      "settings": [],
+      "examples": [],
+      "notes": [
+        "The parameter currently does not provide an interactive prompt.",
+        "The parameter stores ME Attribute data."
+      ],
+      "related": [
+        "me-attribute"
+      ]
+    },
+    {
+      "id": "me-object",
+      "guid": "A7F3C2D1-6E54-4B91-9F28-21D8E6C04A73",
+      "name": "ME Object",
+      "nickname": "ME Obj",
+      "category": "Meanders",
+      "subcategory": "Params",
+      "status": "stable",
+      "introducedIn": "0.1.0",
+      "description": {
+        "short": "Meanders Object parameter.",
+        "long": "A Grasshopper parameter for storing, previewing, and baking Meanders Object data."
+      },
+      "icon": "me-object-param.png",
+      "access": "tree",
+      "type": "ME_Object",
+      "settings": [],
+      "examples": [],
+      "notes": [
+        "The parameter supports Grasshopper tree access.",
+        "The parameter supports viewport preview.",
+        "The parameter supports baking Meanders objects into the Rhino document."
+      ],
+      "related": [
+        "me-attach-attribute",
+        "me-detach-geometry"
+      ]
     }
   ]
 }

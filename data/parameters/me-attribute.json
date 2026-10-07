@@ -1,0 +1,24 @@
+{
+  "id": "me-attribute",
+  "guid": "B6C4D8A1-3E72-4F95-8C16-7A9E2D51F403",
+  "name": "ME Attribute",
+  "nickname": "ME Attr",
+  "category": "Meanders",
+  "subcategory": "Params",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Meanders Attribute parameter.",
+    "long": "A Grasshopper parameter for storing and passing Meanders Attribute data."
+  },
+  "icon": "me-attribute-param.png",
+  "access": "item",
+  "type": "ME_Attribute",
+  "settings": [],
+  "examples": [],
+  "notes": [
+    "The parameter currently does not provide an interactive prompt.",
+    "The parameter stores ME Attribute data."
+  ],
+  "related": ["me-attribute"]
+}

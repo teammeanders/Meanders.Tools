@@ -1,0 +1,25 @@
+{
+  "id": "me-object",
+  "guid": "A7F3C2D1-6E54-4B91-9F28-21D8E6C04A73",
+  "name": "ME Object",
+  "nickname": "ME Obj",
+  "category": "Meanders",
+  "subcategory": "Params",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Meanders Object parameter.",
+    "long": "A Grasshopper parameter for storing, previewing, and baking Meanders Object data."
+  },
+  "icon": "me-object-param.png",
+  "access": "tree",
+  "type": "ME_Object",
+  "settings": [],
+  "examples": [],
+  "notes": [
+    "The parameter supports Grasshopper tree access.",
+    "The parameter supports viewport preview.",
+    "The parameter supports baking Meanders objects into the Rhino document."
+  ],
+  "related": ["me-attach-attribute", "me-detach-geometry"]
+}

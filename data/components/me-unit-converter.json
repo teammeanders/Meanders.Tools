@@ -1,0 +1,67 @@
+{
+  "id": "me-unit-converter",
+  "guid": "5A4E9E1D-4B3D-4D0B-8E4B-1C9F9F0D3A71",
+  "name": "ME Unit Converter",
+  "nickname": "ME Units",
+  "category": "Meanders",
+  "subcategory": "Utilities",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Convert values between supported length units.",
+    "long": "Converts numerical length values between millimeters, centimeters, meters, inches, and feet. Source unit, target unit, and conversion direction are controlled from the component context menu."
+  },
+  "icon": "me-unit-converter.png",
+  "inputs": [
+    {
+      "name": "Value",
+      "nickname": "X",
+      "type": "number",
+      "access": "item",
+      "optional": false,
+      "description": "Numeric length value to convert."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Result",
+      "nickname": "Y",
+      "type": "number",
+      "access": "item",
+      "description": "Converted length value in the selected target unit."
+    }
+  ],
+  "settings": [
+    {
+      "name": "From Unit",
+      "type": "select",
+      "persistent": true,
+      "options": ["Millimeter", "Centimeter", "Meter", "Inch", "Foot"]
+    },
+    {
+      "name": "To Unit",
+      "type": "select",
+      "persistent": true,
+      "options": ["Millimeter", "Centimeter", "Meter", "Inch", "Foot"]
+    },
+    {
+      "name": "Invert",
+      "type": "boolean",
+      "persistent": true
+    }
+  ],
+  "errors": [],
+  "examples": [
+    {
+      "title": "Feet to millimeters",
+      "description": "Convert 12 feet to millimeters.",
+      "input": 12,
+      "output": 3657.6
+    }
+  ],
+  "notes": [
+    "The component currently supports length units only.",
+    "Context menu settings are stored inside the Grasshopper document."
+  ],
+  "related": []
+}

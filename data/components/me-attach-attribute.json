@@ -1,0 +1,56 @@
+{
+  "id": "me-attach-attribute",
+  "guid": "E42B8C71-93F6-4A05-A6D2-5C17F9B83426",
+  "name": "ME Attach Attribute",
+  "nickname": "ME Attach",
+  "category": "Meanders",
+  "subcategory": "Objects",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Attach Meanders attributes to geometry or Grasshopper data.",
+    "long": "Creates ME Object instances by combining geometry or supported Grasshopper data with Meanders attributes while preserving the geometry input tree structure."
+  },
+  "icon": "me-attach-attribute.png",
+  "inputs": [
+    {
+      "name": "Geometry",
+      "nickname": "G",
+      "type": "generic",
+      "access": "tree",
+      "optional": false,
+      "description": "Geometry or supported Grasshopper data to combine with Meanders attributes."
+    },
+    {
+      "name": "Attributes",
+      "nickname": "A",
+      "type": "generic",
+      "access": "tree",
+      "optional": true,
+      "description": "ME Attribute or Rhino ObjectAttributes to attach to the supplied geometry."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ME Objects",
+      "nickname": "O",
+      "type": "ME_Object",
+      "access": "tree",
+      "description": "ME Object instances containing geometry and attached attributes."
+    }
+  ],
+  "settings": [],
+  "errors": [],
+  "examples": [
+    {
+      "title": "Attach one attribute set to multiple geometry items",
+      "description": "Use a single attribute item with a geometry branch; the last available attribute is reused for remaining geometry items."
+    }
+  ],
+  "notes": [
+    "Geometry tree paths are preserved.",
+    "If an attribute branch is shorter than the geometry branch, the last available attribute is reused.",
+    "If no attributes are supplied, default empty object attributes are used."
+  ],
+  "related": ["me-attribute", "me-detach-geometry"]
+}
