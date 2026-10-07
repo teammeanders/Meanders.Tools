@@ -1,0 +1,129 @@
+{
+  "version": 2,
+  "canonical": true,
+  "references": {
+    "visualLanguage": "Grasshopper-native",
+    "sourceExamples": [
+      "Arc",
+      "Attach Attributes",
+      "Average",
+      "Automatic Edge Surface",
+      "Box 2Pt",
+      "Bounding Box",
+      "Deconstruct Box",
+      "Deconstruct Brep",
+      "Geometry Pipeline",
+      "Geometry",
+      "Curve"
+    ]
+  },
+  "canvas": {
+    "grasshopper": {
+      "width": 24,
+      "height": 24,
+      "background": "transparent"
+    },
+    "docs": {
+      "width": 300,
+      "height": 300,
+      "background": "transparent"
+    }
+  },
+  "occupancy": {
+    "targetPercent": 80,
+    "acceptableRangePercent": [
+      75,
+      85
+    ],
+    "excessiveEmptySpaceAllowed": false
+  },
+  "colors": {
+    "accent": "#F59E0B",
+    "accentHighlight": "#FBBF24",
+    "accentLight": "#FEF3C7",
+    "accentDark": "#D97706",
+    "outline": "#15191D",
+    "neutralLight": "#FFFFFF"
+  },
+  "stroke": {
+    "primaryPxAt24": 2,
+    "minorPxAt24": [
+      1,
+      1.5
+    ],
+    "darkOutlineRequired": true,
+    "pixelGridPreferred": true,
+    "avoidNearHorizontalOrVerticalAngles": true
+  },
+  "style": {
+    "grasshopperNative": true,
+    "pseudo3D": "subtle",
+    "flatAppIconLookAllowed": false,
+    "glossyEffectsAllowed": false,
+    "textAllowed": false,
+    "decorativeEffectsAllowed": false,
+    "subtleGradientOnlyWhenUseful": true,
+    "strongSilhouetteRequired": true,
+    "primitiveCountGuideline": [
+      2,
+      4
+    ]
+  },
+  "component": {
+    "sharedShell": false,
+    "palette": "amber-orange",
+    "semanticObjectRequired": true,
+    "maxSupportingConcepts": 1,
+    "examples": {
+      "me-attribute": "attribute/tag/property symbol",
+      "me-attach-attribute": "geometry + attach/link/add",
+      "me-detach-geometry": "geometry + separation",
+      "me-unit-converter": "measurement/ruler + two-way conversion"
+    }
+  },
+  "parameter": {
+    "sharedShell": true,
+    "shellStyle": "dark Grasshopper-style clipped/beveled badge",
+    "shellColor": "dark neutral",
+    "shellRecognitionPriority": true,
+    "innerGlyph": {
+      "centered": true,
+      "minimal": true,
+      "lightNeutralPreferred": true,
+      "restrainedAccent": true
+    },
+    "examples": {
+      "me-attribute-param": "shared dark shell + attribute/tag glyph",
+      "me-object-param": "shared dark shell + generic object/geometry glyph"
+    }
+  },
+  "naming": {
+    "basePattern": "me-<name>",
+    "masterPattern": "me-<name>.svg",
+    "docsPngPattern": "me-<name>-300.png",
+    "grasshopperPngPattern": "me-<name>-24.png"
+  },
+  "exportRules": {
+    "exactDimensionsRequired": true,
+    "transparentPngRequired": true,
+    "designFor24First": true,
+    "simpleDownscaleOnly": false
+  },
+  "checklist": [
+    "correct-semantic-concept",
+    "clear-at-24x24",
+    "occupancy-between-75-and-85-percent",
+    "consistent-safe-margin",
+    "transparent-background",
+    "accent-is-F59E0B",
+    "dark-outline-present",
+    "grasshopper-native-style",
+    "strong-silhouette",
+    "no-text",
+    "minimal-detail",
+    "component-vs-param-grammar-correct",
+    "correct-filename",
+    "exact-300x300-export",
+    "exact-24x24-export"
+  ]
+}
