@@ -1,0 +1,90 @@
+{
+  "id": "me-fab-text",
+  "guid": "D4A7C92E-8B31-4F65-A2C8-71E9B53F406D",
+  "name": "ME Fab Text",
+  "nickname": "ME Fab",
+  "category": "Meanders",
+  "subcategory": "Fabrication",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Create fabrication-ready text geometry.",
+    "long": "Creates fabrication-ready text curves from a plane and text string. Normal characters are generated from the Meanders fabrication glyph library. Fabrication tokens can insert directional arrows and edge-banding markers directly into the text layout."
+  },
+  "icon": "me-fab-text.png",
+  "inputs": [
+    {
+      "name": "Plane",
+      "nickname": "P",
+      "type": "plane",
+      "access": "item",
+      "optional": true,
+      "description": "Plane used to place the fabrication text."
+    },
+    {
+      "name": "Text",
+      "nickname": "T",
+      "type": "text",
+      "access": "item",
+      "optional": false,
+      "description": "Text containing supported characters and fabrication tokens."
+    },
+    {
+      "name": "Text Size",
+      "nickname": "S",
+      "type": "number",
+      "access": "item",
+      "optional": true,
+      "description": "Height of the fabrication text. Default is 1."
+    },
+    {
+      "name": "Justification",
+      "nickname": "J",
+      "type": "integer",
+      "access": "item",
+      "optional": true,
+      "description": "Text justification. 0=Bottom Left, 1=Bottom Center, 2=Bottom Right, 3=Middle Left, 4=Middle Center, 5=Middle Right, 6=Top Left, 7=Top Center, 8=Top Right. Default is Middle Center."
+    },
+    {
+      "name": "Spacing",
+      "nickname": "Sp",
+      "type": "number",
+      "access": "item",
+      "optional": true,
+      "description": "Additional spacing between character slots. Default is the minimum spacing."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Curves",
+      "nickname": "C",
+      "type": "curve",
+      "access": "list",
+      "description": "Fabrication text curves."
+    }
+  ],
+  "settings": [],
+  "errors": [
+    "Unsupported characters produce an error identifying the unsupported character and its position in the input text."
+  ],
+  "examples": [
+    {
+      "title": "Edge banding marker",
+      "description": "Use an edge-banding token to omit the top edge of the marker.",
+      "text": "H-95<EG-NT>"
+    },
+    {
+      "title": "Directional arrows",
+      "description": "Insert directional arrows into the fabrication text.",
+      "text": "N-25<AR-45><AR-195>"
+    }
+  ],
+  "notes": [
+    "Normal characters use the Meanders fabrication glyph library.",
+    "Arrow and edge-banding tokens occupy one character slot.",
+    "Edge-banding markers are square.",
+    "Spacing can be increased from its default minimum.",
+    "Only characters available in the fabrication glyph library are supported."
+  ],
+  "related": []
+}

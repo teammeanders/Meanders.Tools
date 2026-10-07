@@ -1,7 +1,7 @@
-﻿using Rhino;
-using Rhino.Geometry;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Rhino;
+using Rhino.Geometry;
 
 namespace Meanders.Tools.Core.Fabrication
 {
@@ -30,16 +30,22 @@ namespace Meanders.Tools.Core.Fabrication
             double tolerance)
         {
             if (token == null)
+            {
                 throw new ArgumentNullException(
                     nameof(token));
+            }
 
             if (characterHeight <= 0.0)
+            {
                 throw new ArgumentOutOfRangeException(
                     nameof(characterHeight));
+            }
 
             if (tolerance <= 0.0)
+            {
                 throw new ArgumentOutOfRangeException(
                     nameof(tolerance));
+            }
 
             switch (token.Type)
             {
@@ -59,8 +65,105 @@ namespace Meanders.Tools.Core.Fabrication
                         characterHeight);
 
                 default:
-                    throw new ArgumentOutOfRangeException(
-                        nameof(token.Type));
+                    throw new InvalidOperationException(
+                        "Unknown FabText token type: " +
+                        token.Type);
+            }
+        }
+
+        public static bool Supports(
+            FabTextToken token)
+        {
+            if (token == null)
+            {
+                return false;
+            }
+
+            switch (token.Type)
+            {
+                case FabTextTokenType.Text:
+                    return GlyphLibrary.Contains(
+                        token.Text);
+
+                case FabTextTokenType.Arrow:
+                    return true;
+
+                case FabTextTokenType.EdgeMarker:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        public static string GetDescription(
+            FabTextToken token)
+        {
+            if (token == null)
+            {
+                return "Unknown fabrication token.";
+            }
+
+            switch (token.Type)
+            {
+                case FabTextTokenType.Text:
+                    return
+                        "Character '" +
+                        token.Text +
+                        "'";
+
+                case FabTextTokenType.Arrow:
+                    return
+                        "<AR-" +
+                        token.Angle.ToString("0.###") +
+                        ">";
+
+                case FabTextTokenType.EdgeMarker:
+                    return
+                        "<EG-" +
+                        GetEdgeCode(token.Edge) +
+                        ">";
+
+                default:
+                    return
+                        "Unknown fabrication token.";
+            }
+        }
+
+        private static string GetEdgeCode(
+            FabTextEdge edge)
+        {
+            switch (edge)
+            {
+                case FabTextEdge.Full:
+                    return "F";
+
+                case FabTextEdge.BottomRight:
+                    return "BR";
+
+                case FabTextEdge.TopRight:
+                    return "TR";
+
+                case FabTextEdge.TopLeft:
+                    return "TL";
+
+                case FabTextEdge.BottomLeft:
+                    return "BL";
+
+                case FabTextEdge.NoBottom:
+                    return "NB";
+
+                case FabTextEdge.NoRight:
+                    return "NR";
+
+                case FabTextEdge.NoTop:
+                    return "NT";
+
+                case FabTextEdge.NoLeft:
+                    return "NL";
+
+                default:
+                    return edge.ToString();
             }
         }
 
@@ -72,8 +175,9 @@ namespace Meanders.Tools.Core.Fabrication
                 token.Text))
             {
                 throw new InvalidOperationException(
-                    "FabText glyph is not supported: " +
-                    token.Text);
+                    "Unsupported fabrication character: '" +
+                    token.Text +
+                    "'.");
             }
 
             List<Curve> sourceCurves =
@@ -85,17 +189,15 @@ namespace Meanders.Tools.Core.Fabrication
                     sourceCurves.Count);
 
             /*
-             * The glyph library is authored at Text Size = 1.
+             * glyphs.json is authored at Text Size = 1.
              *
-             * Scale it uniformly to the requested text size.
+             * Scale the complete glyph uniformly to
+             * the requested Text Size.
              */
-            double scale =
-                height;
-
-            Transform scaleTransform =
+            Transform scale =
                 Transform.Scale(
                     Point3d.Origin,
-                    scale);
+                    height);
 
             BoundingBox bounds =
                 BoundingBox.Unset;
@@ -103,13 +205,14 @@ namespace Meanders.Tools.Core.Fabrication
             foreach (Curve source in sourceCurves)
             {
                 if (source == null)
+                {
                     continue;
+                }
 
                 Curve curve =
                     source.DuplicateCurve();
 
-                curve.Transform(
-                    scaleTransform);
+                curve.Transform(scale);
 
                 curves.Add(curve);
 
@@ -117,7 +220,9 @@ namespace Meanders.Tools.Core.Fabrication
                     curve.GetBoundingBox(true);
 
                 if (!curveBounds.IsValid)
+                {
                     continue;
+                }
 
                 if (!bounds.IsValid)
                 {
@@ -133,7 +238,8 @@ namespace Meanders.Tools.Core.Fabrication
 
             double width =
                 bounds.IsValid
-                    ? bounds.Max.X - bounds.Min.X
+                    ? bounds.Max.X -
+                      bounds.Min.X
                     : height;
 
             return new FabTextCharacter(
@@ -148,7 +254,7 @@ namespace Meanders.Tools.Core.Fabrication
             double height)
         {
             /*
-             * One square character slot.
+             * Arrow occupies one square character slot.
              */
             double size =
                 height;
@@ -157,10 +263,12 @@ namespace Meanders.Tools.Core.Fabrication
                 size * 0.08;
 
             double min =
-                -size * 0.5 + margin;
+                -size * 0.5 +
+                margin;
 
             double max =
-                size * 0.5 - margin;
+                size * 0.5 -
+                margin;
 
             double headLength =
                 size * 0.28;
@@ -194,20 +302,24 @@ namespace Meanders.Tools.Core.Fabrication
 
             Point3d headBase =
                 end -
-                direction * headLength;
+                direction *
+                headLength;
 
             Point3d left =
                 headBase +
-                perpendicular * headWidth;
+                perpendicular *
+                headWidth;
 
             Point3d right =
                 headBase -
-                perpendicular * headWidth;
+                perpendicular *
+                headWidth;
 
             /*
              * Three independent segments.
              *
-             * No duplicated/retraced shaft.
+             * This prevents the shaft from being traced
+             * twice.
              */
             var curves =
                 new List<Curve>
@@ -352,20 +464,24 @@ namespace Meanders.Tools.Core.Fabrication
                     return true;
 
                 case FabTextEdge.BottomRight:
-                    return edge == "bottom" ||
-                           edge == "right";
+                    return
+                        edge == "bottom" ||
+                        edge == "right";
 
                 case FabTextEdge.TopRight:
-                    return edge == "top" ||
-                           edge == "right";
+                    return
+                        edge == "top" ||
+                        edge == "right";
 
                 case FabTextEdge.TopLeft:
-                    return edge == "top" ||
-                           edge == "left";
+                    return
+                        edge == "top" ||
+                        edge == "left";
 
                 case FabTextEdge.BottomLeft:
-                    return edge == "bottom" ||
-                           edge == "left";
+                    return
+                        edge == "bottom" ||
+                        edge == "left";
 
                 case FabTextEdge.NoBottom:
                     return edge != "bottom";
