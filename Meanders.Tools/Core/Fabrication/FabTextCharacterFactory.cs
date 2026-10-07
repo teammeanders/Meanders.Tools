@@ -7,6 +7,22 @@ namespace Meanders.Tools.Core.Fabrication
 {
     public static class FabTextCharacterFactory
     {
+        private static FabTextGlyphLibrary _glyphLibrary;
+
+        private static FabTextGlyphLibrary GlyphLibrary
+        {
+            get
+            {
+                if (_glyphLibrary == null)
+                {
+                    _glyphLibrary =
+                        FabTextGlyphLibrary.Load();
+                }
+
+                return _glyphLibrary;
+            }
+        }
+
         public static FabTextCharacter Create(
             FabTextToken token,
             double characterWidth,
@@ -16,10 +32,6 @@ namespace Meanders.Tools.Core.Fabrication
             if (token == null)
                 throw new ArgumentNullException(
                     nameof(token));
-
-            if (characterWidth <= 0.0)
-                throw new ArgumentOutOfRangeException(
-                    nameof(characterWidth));
 
             if (characterHeight <= 0.0)
                 throw new ArgumentOutOfRangeException(
@@ -34,23 +46,17 @@ namespace Meanders.Tools.Core.Fabrication
                 case FabTextTokenType.Text:
                     return CreateText(
                         token,
-                        characterWidth,
-                        characterHeight,
-                        tolerance);
+                        characterHeight);
 
                 case FabTextTokenType.Arrow:
                     return CreateArrow(
                         token,
-                        characterWidth,
-                        characterHeight,
-                        tolerance);
+                        characterHeight);
 
                 case FabTextTokenType.EdgeMarker:
                     return CreateEdgeMarker(
                         token,
-                        characterWidth,
-                        characterHeight,
-                        tolerance);
+                        characterHeight);
 
                 default:
                     throw new ArgumentOutOfRangeException(
@@ -59,88 +65,108 @@ namespace Meanders.Tools.Core.Fabrication
         }
 
         private static FabTextCharacter CreateText(
-    FabTextToken token,
-    double fallbackWidth,
-    double height,
-    double tolerance)
+            FabTextToken token,
+            double height)
         {
-            Curve[] curves =
-                FabTextGeometry.CreateTextOutlines(
-                    token.Text,
-                    Plane.WorldXY,
-                    height,
-                    false,
-                    tolerance);
-
-            double width = fallbackWidth;
-
-            if (curves.Length > 0)
+            if (!GlyphLibrary.Contains(
+                token.Text))
             {
-                BoundingBox bounds =
-                    BoundingBox.Unset;
+                throw new InvalidOperationException(
+                    "FabText glyph is not supported: " +
+                    token.Text);
+            }
 
-                foreach (Curve curve in curves)
+            List<Curve> sourceCurves =
+                GlyphLibrary.CreateCurves(
+                    token.Text);
+
+            var curves =
+                new List<Curve>(
+                    sourceCurves.Count);
+
+            /*
+             * The glyph library is authored at Text Size = 1.
+             *
+             * Scale it uniformly to the requested text size.
+             */
+            double scale =
+                height;
+
+            Transform scaleTransform =
+                Transform.Scale(
+                    Point3d.Origin,
+                    scale);
+
+            BoundingBox bounds =
+                BoundingBox.Unset;
+
+            foreach (Curve source in sourceCurves)
+            {
+                if (source == null)
+                    continue;
+
+                Curve curve =
+                    source.DuplicateCurve();
+
+                curve.Transform(
+                    scaleTransform);
+
+                curves.Add(curve);
+
+                BoundingBox curveBounds =
+                    curve.GetBoundingBox(true);
+
+                if (!curveBounds.IsValid)
+                    continue;
+
+                if (!bounds.IsValid)
                 {
-                    if (curve == null)
-                        continue;
-
-                    BoundingBox curveBounds =
-                        curve.GetBoundingBox(true);
-
-                    if (!bounds.IsValid)
-                    {
-                        bounds = curveBounds;
-                    }
-                    else
-                    {
-                        bounds.Union(curveBounds);
-                    }
+                    bounds =
+                        curveBounds;
                 }
-
-                if (bounds.IsValid)
+                else
                 {
-                    double measuredWidth =
-                        bounds.Max.X - bounds.Min.X;
-
-                    if (measuredWidth > tolerance)
-                    {
-                        width = measuredWidth;
-                    }
+                    bounds.Union(
+                        curveBounds);
                 }
             }
+
+            double width =
+                bounds.IsValid
+                    ? bounds.Max.X - bounds.Min.X
+                    : height;
 
             return new FabTextCharacter(
                 token,
                 width,
                 height,
-                curves);
+                curves.ToArray());
         }
 
         private static FabTextCharacter CreateArrow(
-     FabTextToken token,
-     double width,
-     double height,
-     double tolerance)
+            FabTextToken token,
+            double height)
         {
             /*
-             * Every Arrow is a square character slot.
-             *
-             * Example:
-             * Text Size = 1
-             * Arrow slot = 1 x 1
+             * One square character slot.
              */
+            double size =
+                height;
 
-            double size = height;
+            double margin =
+                size * 0.08;
 
-            double margin = size * 0.08;
+            double min =
+                -size * 0.5 + margin;
 
-            double min = -size * 0.5 + margin;
-            double max = size * 0.5 - margin;
+            double max =
+                size * 0.5 - margin;
 
-            double shaftLength = max - min;
+            double headLength =
+                size * 0.28;
 
-            double headLength = size * 0.28;
-            double headWidth = size * 0.22;
+            double headWidth =
+                size * 0.22;
 
             Point3d start =
                 new Point3d(
@@ -178,48 +204,58 @@ namespace Meanders.Tools.Core.Fabrication
                 headBase -
                 perpendicular * headWidth;
 
-            var polyline =
-                new Polyline(
-                    new[]
-                    {
-                start,
-                end,
-                left,
-                end,
-                right
-                    });
+            /*
+             * Three independent segments.
+             *
+             * No duplicated/retraced shaft.
+             */
+            var curves =
+                new List<Curve>
+                {
+                    new LineCurve(
+                        start,
+                        end),
 
-            Curve curve =
-                polyline.ToPolylineCurve();
+                    new LineCurve(
+                        end,
+                        left),
 
-            double angleRadians =
+                    new LineCurve(
+                        end,
+                        right)
+                };
+
+            double angle =
                 RhinoMath.ToRadians(
                     token.Angle);
 
             Transform rotation =
                 Transform.Rotation(
-                    angleRadians,
+                    angle,
                     Point3d.Origin);
 
-            curve.Transform(rotation);
+            foreach (Curve curve in curves)
+            {
+                curve.Transform(
+                    rotation);
+            }
 
             return new FabTextCharacter(
                 token,
                 size,
                 size,
-                new[] { curve });
+                curves.ToArray());
         }
 
         private static FabTextCharacter CreateEdgeMarker(
-    FabTextToken token,
-    double width,
-    double height,
-    double tolerance)
+            FabTextToken token,
+            double height)
         {
             /*
-             * Edge marker is always a square character.
+             * EG is always a square character slot.
              */
-            double size = height;
+            double size =
+                height;
 
             double half =
                 size * 0.5;
@@ -287,19 +323,23 @@ namespace Meanders.Tools.Core.Fabrication
         }
 
         private static void AddEdge(
-     System.Collections.Generic.List<Curve> curves,
-     FabTextEdge mode,
-     string edge,
-     Point3d start,
-     Point3d end)
+            List<Curve> curves,
+            FabTextEdge mode,
+            string edge,
+            Point3d start,
+            Point3d end)
         {
-            if (ShouldDrawEdge(mode, edge))
+            if (!ShouldDrawEdge(
+                mode,
+                edge))
             {
-                curves.Add(
-                    new LineCurve(
-                        start,
-                        end));
+                return;
             }
+
+            curves.Add(
+                new LineCurve(
+                    start,
+                    end));
         }
 
         private static bool ShouldDrawEdge(

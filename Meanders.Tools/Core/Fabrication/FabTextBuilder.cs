@@ -18,10 +18,6 @@ namespace Meanders.Tools.Core.Fabrication
             if (string.IsNullOrEmpty(text))
                 return new List<Curve>();
 
-            if (characterWidth <= 0.0)
-                throw new ArgumentOutOfRangeException(
-                    nameof(characterWidth));
-
             if (textHeight <= 0.0)
                 throw new ArgumentOutOfRangeException(
                     nameof(textHeight));
@@ -30,21 +26,16 @@ namespace Meanders.Tools.Core.Fabrication
                 throw new ArgumentOutOfRangeException(
                     nameof(tolerance));
 
-            /*
-             * 1. Parse the fabrication text.
-             */
             List<FabTextToken> tokens =
                 FabTextParser.Parse(text);
 
-            /*
-             * 2. Create one character object for
-             *    every text character / fabrication token.
-             */
             var characters =
                 new List<FabTextCharacter>(
                     tokens.Count);
 
-            foreach (FabTextToken token in tokens)
+            foreach (
+                FabTextToken token
+                in tokens)
             {
                 FabTextCharacter character =
                     FabTextCharacterFactory.Create(
@@ -53,16 +44,10 @@ namespace Meanders.Tools.Core.Fabrication
                         textHeight,
                         tolerance);
 
-                characters.Add(character);
+                characters.Add(
+                    character);
             }
 
-            /*
-             * 3. Build the complete character layout.
-             *
-             * IMPORTANT:
-             * The layout is based on the real bounding
-             * box of every character/token.
-             */
             FabTextLayout layout =
                 FabTextLayoutEngine.Layout(
                     characters,
@@ -73,19 +58,15 @@ namespace Meanders.Tools.Core.Fabrication
             var result =
                 new List<Curve>();
 
-            /*
-             * 4. Place every character according to
-             *    the calculated layout.
-             */
             foreach (
                 FabTextLayoutItem item
                 in layout.Items)
             {
-                if (item.Character == null)
+                if (item.Character == null ||
+                    item.Character.Curves == null)
+                {
                     continue;
-
-                if (item.Character.Curves == null)
-                    continue;
+                }
 
                 foreach (
                     Curve source
@@ -97,10 +78,6 @@ namespace Meanders.Tools.Core.Fabrication
                     Curve curve =
                         source.DuplicateCurve();
 
-                    /*
-                     * Move the character from its local
-                     * origin into its layout position.
-                     */
                     Transform translation =
                         Transform.Translation(
                             item.X,
@@ -110,20 +87,17 @@ namespace Meanders.Tools.Core.Fabrication
                     curve.Transform(
                         translation);
 
-                    result.Add(curve);
+                    result.Add(
+                        curve);
                 }
             }
 
-
-            result =
-                FabTextGeometrySimplifier.Simplify(
-                    result,
-                    tolerance);
-
-
             /*
-             * 6. Finally transform the complete local
-             * fabrication layout onto the requested Plane.
+             * The glyph library already contains the
+             * fabrication-ready PWK representation.
+             *
+             * Do NOT simplify, rebuild or convert to
+             * polylines here.
              */
             Transform planeTransform =
                 Transform.PlaneToPlane(
@@ -132,9 +106,6 @@ namespace Meanders.Tools.Core.Fabrication
 
             foreach (Curve curve in result)
             {
-                if (curve == null)
-                    continue;
-
                 curve.Transform(
                     planeTransform);
             }

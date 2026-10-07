@@ -33,25 +33,25 @@ namespace Meanders.Tools.Grasshopper.Components
             pManager.AddTextParameter(
                 "Text",
                 "T",
-                "Fabrication text and fabrication tokens.",
+                "Text containing fabrication tokens.",
                 GH_ParamAccess.item);
 
             pManager.AddNumberParameter(
                 "Text Size",
                 "S",
-                "Text height.",
+                "Height of the fabrication text.",
                 GH_ParamAccess.item);
 
             pManager.AddIntegerParameter(
                 "Justification",
                 "J",
-                "Text justification. 0=Bottom Left, 4=Middle Center, 8=Top Right.",
+                "Text justification: 0=Bottom Left, 4=Middle Center, 8=Top Right.",
                 GH_ParamAccess.item);
 
             pManager.AddNumberParameter(
                 "Spacing",
                 "Sp",
-                "Additional spacing between fabrication characters.",
+                "Additional spacing between character slots.",
                 GH_ParamAccess.item);
 
             pManager[0].Optional = true;
@@ -64,36 +64,34 @@ namespace Meanders.Tools.Grasshopper.Components
             GH_OutputParamManager pManager)
         {
             pManager.AddCurveParameter(
-                "Polylines",
+                "Curves",
                 "C",
-                "Fabrication text polylines.",
+                "Fabrication text curves.",
                 GH_ParamAccess.list);
         }
 
         protected override void SolveInstance(
             IGH_DataAccess DA)
         {
-            Plane plane =
-                Plane.WorldXY;
+            Plane plane = Plane.WorldXY;
 
-            string text =
-                string.Empty;
+            string text = string.Empty;
 
-            double textSize =
-                1.0;
+            // Defaults
+            double textSize = 1.0;
+            int justification = 4;
+            double spacing = 0.0;
 
-            int justification =
-                4;
-
-            double spacing =
-                0.0;
-
-            // P = 0
+            /*
+             * Plane
+             */
             DA.GetData(
                 0,
                 ref plane);
 
-            // T = 1
+            /*
+             * Text
+             */
             if (!DA.GetData(
                 1,
                 ref text))
@@ -101,30 +99,53 @@ namespace Meanders.Tools.Grasshopper.Components
                 return;
             }
 
-            // S = 2
-            if (DA.GetData(
+            /*
+             * Text Size
+             *
+             * Default = 1.0
+             */
+            DA.GetData(
                 2,
-                ref textSize))
-            {
-                if (textSize <= 0.0)
-                {
-                    AddRuntimeMessage(
-                        GH_RuntimeMessageLevel.Error,
-                        "Text Size must be greater than zero.");
+                ref textSize);
 
-                    return;
-                }
-            }
-
-            // J = 3
+            /*
+             * Justification
+             *
+             * Default = 4
+             * Middle Center
+             */
             DA.GetData(
                 3,
                 ref justification);
 
-            // Sp = 4
+            /*
+             * Spacing
+             *
+             * Default = 0.0
+             *
+             * The layout engine converts this into
+             * the minimum/default character gap.
+             */
             DA.GetData(
                 4,
                 ref spacing);
+
+            /*
+             * Validation
+             */
+            if (string.IsNullOrEmpty(text))
+            {
+                return;
+            }
+
+            if (textSize <= 0.0)
+            {
+                AddRuntimeMessage(
+                    GH_RuntimeMessageLevel.Error,
+                    "Text Size must be greater than zero.");
+
+                return;
+            }
 
             if (spacing < 0.0)
             {
@@ -147,18 +168,20 @@ namespace Meanders.Tools.Grasshopper.Components
             }
 
             FabTextJustification layoutJustification =
-                (FabTextJustification)justification;
+                (FabTextJustification)
+                justification;
 
             double tolerance =
                 RhinoDoc.ActiveDoc != null
                     ? RhinoDoc.ActiveDoc.ModelAbsoluteTolerance
-                    : 0.01;
+                    : 0.001;
 
             /*
-             * Temporary fallback slot width.
+             * Kept for compatibility with the current
+             * factory API.
              *
-             * The actual character geometry is measured
-             * later by the layout engine.
+             * Normal glyph width now comes from
+             * glyphs.json.
              */
             double characterWidth =
                 textSize * 0.6;
@@ -175,14 +198,9 @@ namespace Meanders.Tools.Grasshopper.Components
                         layoutJustification,
                         tolerance);
 
-                List<Polyline> polylines =
-                    FabTextPolyline.Convert(
-                        curves,
-                        tolerance);
-
                 DA.SetDataList(
                     0,
-                    polylines);
+                    curves);
             }
             catch (Exception ex)
             {
@@ -200,9 +218,14 @@ namespace Meanders.Tools.Grasshopper.Components
             }
         }
 
-        protected override Bitmap Icon =>
-            MeandersIconLoader.Load(
-                "me-fab-text.png");
+        protected override Bitmap Icon
+        {
+            get
+            {
+                return MeandersIconLoader.Load(
+                    "me-fab-text.png");
+            }
+        }
 
         public override Guid ComponentGuid
         {
