@@ -1,7 +1,7 @@
 {
   "$schema": "./components.schema.json",
   "_generated": true,
-  "_generatedAt": "2026-10-07T20:43:49.144074+00:00",
+  "_generatedAt": "2026-10-09T14:01:03.235971+00:00",
   "components": [
     {
       "id": "me-attribute",
@@ -143,7 +143,7 @@
       "introducedIn": "0.1.0",
       "description": {
         "short": "Create fabrication-ready text geometry.",
-        "long": "Creates fabrication-ready text curves from a plane and text string. Normal characters are generated from the Meanders fabrication glyph library. Fabrication tokens can insert directional arrows and edge-banding markers directly into the text layout."
+        "long": "Creates fabrication-ready text curves on a plane using the Meanders fabrication glyph library. Supported characters are converted directly to lightweight geometric curves. Fabrication markers can be embedded in the text using AR tokens for directional arrows and EG tokens for edge-banding markers."
       },
       "icon": "me-fab-text.png",
       "inputs": [
@@ -153,7 +153,7 @@
           "type": "plane",
           "access": "item",
           "optional": true,
-          "description": "Plane used to place the fabrication text."
+          "description": "Plane used to place the fabrication text. Defaults to the World XY plane."
         },
         {
           "name": "Text",
@@ -161,7 +161,7 @@
           "type": "text",
           "access": "item",
           "optional": false,
-          "description": "Text containing supported characters and fabrication tokens."
+          "description": "Fabrication text containing supported characters and optional AR or EG markers."
         },
         {
           "name": "Text Size",
@@ -169,7 +169,7 @@
           "type": "number",
           "access": "item",
           "optional": true,
-          "description": "Height of the fabrication text. Default is 1."
+          "description": "Height of the text. Default is 1."
         },
         {
           "name": "Justification",
@@ -177,7 +177,7 @@
           "type": "integer",
           "access": "item",
           "optional": true,
-          "description": "Text justification. 0=Bottom Left, 1=Bottom Center, 2=Bottom Right, 3=Middle Left, 4=Middle Center, 5=Middle Right, 6=Top Left, 7=Top Center, 8=Top Right. Default is Middle Center."
+          "description": "Text justification. 0=Bottom Left, 1=Bottom Center, 2=Bottom Right, 3=Middle Left, 4=Middle Center, 5=Middle Right, 6=Top Left, 7=Top Center, 8=Top Right. Default is Middle Center. The same options are also available from the component context menu."
         },
         {
           "name": "Spacing",
@@ -185,7 +185,7 @@
           "type": "number",
           "access": "item",
           "optional": true,
-          "description": "Additional spacing between character slots. Default is the minimum spacing."
+          "description": "Additional spacing between character slots. The default value is the minimum spacing."
         }
       ],
       "outputs": [
@@ -199,26 +199,56 @@
       ],
       "settings": [],
       "errors": [
-        "Unsupported characters produce an error identifying the unsupported character and its position in the input text."
+        "Unsupported characters produce an error identifying the unsupported character and its position in the input text.",
+        "Spacing cannot be negative.",
+        "Text Size must be greater than zero.",
+        "Justification must be between 0 and 8."
       ],
       "examples": [
         {
-          "title": "Edge banding marker",
-          "description": "Use an edge-banding token to omit the top edge of the marker.",
-          "text": "H-95<EG-NT>"
+          "title": "Basic fabrication text",
+          "description": "Create simple fabrication text from supported characters.",
+          "text": "H-95"
         },
         {
           "title": "Directional arrows",
-          "description": "Insert directional arrows into the fabrication text.",
+          "description": "Insert directional arrows into the text. Each AR marker occupies one character slot and the angle is measured in degrees relative to the local X axis of the text Plane.",
           "text": "N-25<AR-45><AR-195>"
+        },
+        {
+          "title": "Full edge marker",
+          "description": "Insert a square edge-banding marker with all four edges visible.",
+          "text": "H-95<EG-F>"
+        },
+        {
+          "title": "Partial edge marker",
+          "description": "Insert a square edge-banding marker with selected edges omitted. EG-NT removes the top edge.",
+          "text": "H-95<EG-NT>"
         }
       ],
       "notes": [
-        "Normal characters use the Meanders fabrication glyph library.",
-        "Arrow and edge-banding tokens occupy one character slot.",
-        "Edge-banding markers are square.",
-        "Spacing can be increased from its default minimum.",
-        "Only characters available in the fabrication glyph library are supported."
+        "Normal characters are generated from the Meanders fabrication glyph library.",
+        "Only characters available in the fabrication glyph library are supported.",
+        "Each normal character participates as one character in the text layout.",
+        "AR markers use the format <AR-angle>, for example <AR-45> or <AR-195>.",
+        "The AR angle is measured in degrees relative to the local X axis of the text Plane.",
+        "Each AR marker occupies one character slot.",
+        "EG markers use the format <EG-flag>.",
+        "EG-F displays all four edges of the square marker.",
+        "EG-BR displays the Bottom and Right edges.",
+        "EG-TR displays the Top and Right edges.",
+        "EG-TL displays the Top and Left edges.",
+        "EG-BL displays the Bottom and Left edges.",
+        "EG-NB displays all edges except Bottom.",
+        "EG-NR displays all edges except Right.",
+        "EG-NT displays all edges except Top.",
+        "EG-NL displays all edges except Left.",
+        "Each EG marker occupies one character slot.",
+        "Spacing adds distance between character slots and cannot be negative.",
+        "Justification can be supplied through the J input or selected from the component context menu.",
+        "The default justification is Middle Center.",
+        "The default Text Size is 1.",
+        "The default Spacing is the minimum spacing."
       ],
       "related": []
     },

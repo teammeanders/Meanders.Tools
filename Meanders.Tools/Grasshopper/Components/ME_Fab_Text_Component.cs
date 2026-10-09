@@ -1,4 +1,5 @@
-﻿using Grasshopper.Kernel;
+﻿using GH_IO.Serialization;
+using Grasshopper.Kernel;
 using Meanders.Tools.Core.Fabrication;
 using Meanders.Tools.Plugin;
 using Rhino;
@@ -6,11 +7,14 @@ using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Meanders.Tools.Grasshopper.Components
 {
     public class ME_Fab_Text_Component : GH_Component
     {
+        private int _justification = 4;
+
         public ME_Fab_Text_Component()
             : base(
                 "ME Fab Text",
@@ -45,7 +49,7 @@ namespace Meanders.Tools.Grasshopper.Components
             pManager.AddIntegerParameter(
                 "Justification",
                 "J",
-                "Text justification: 0=Bottom Left, 4=Middle Center, 8=Top Right.",
+                "Text justification. 0=Bottom Left, 1=Bottom Center, 2=Bottom Right, 3=Middle Left, 4=Middle Center, 5=Middle Right, 6=Top Left, 7=Top Center, 8=Top Right.",
                 GH_ParamAccess.item);
 
             pManager.AddNumberParameter(
@@ -73,14 +77,26 @@ namespace Meanders.Tools.Grasshopper.Components
         protected override void SolveInstance(
             IGH_DataAccess DA)
         {
-            Plane plane = Plane.WorldXY;
+            Plane plane =
+                Plane.WorldXY;
 
-            string text = string.Empty;
+            string text =
+                string.Empty;
 
-            // Defaults
-            double textSize = 1.0;
-            int justification = 4;
-            double spacing = 0.0;
+            double textSize =
+                1.0;
+
+            /*
+             * Context-menu value is the default.
+             *
+             * If J is connected, the supplied input
+             * value overrides this value.
+             */
+            int justification =
+                _justification;
+
+            double spacing =
+                0.0;
 
             /*
              * Plane
@@ -101,8 +117,6 @@ namespace Meanders.Tools.Grasshopper.Components
 
             /*
              * Text Size
-             *
-             * Default = 1.0
              */
             DA.GetData(
                 2,
@@ -111,20 +125,34 @@ namespace Meanders.Tools.Grasshopper.Components
             /*
              * Justification
              *
-             * Default = 4
-             * Middle Center
+             * If the input is connected, use its value.
+             * Otherwise use the persistent context-menu value.
              */
-            DA.GetData(
+            if (DA.GetData(
                 3,
-                ref justification);
+                ref justification))
+            {
+                if (
+                    justification < 0 ||
+                    justification > 8)
+                {
+                    AddRuntimeMessage(
+                        GH_RuntimeMessageLevel.Error,
+                        "Justification must be between 0 and 8.");
+
+                    return;
+                }
+
+                /*
+                 * Keep the menu state synchronized with
+                 * an explicit J input.
+                 */
+                _justification =
+                    justification;
+            }
 
             /*
              * Spacing
-             *
-             * Default = 0.0
-             *
-             * The layout engine converts this into
-             * the minimum/default character gap.
              */
             DA.GetData(
                 4,
@@ -178,10 +206,7 @@ namespace Meanders.Tools.Grasshopper.Components
 
             /*
              * Kept for compatibility with the current
-             * factory API.
-             *
-             * Normal glyph width now comes from
-             * glyphs.json.
+             * builder API.
              */
             double characterWidth =
                 textSize * 0.6;
@@ -208,6 +233,122 @@ namespace Meanders.Tools.Grasshopper.Components
                     GH_RuntimeMessageLevel.Error,
                     ex.ToString());
             }
+        }
+
+        protected override void AppendAdditionalComponentMenuItems(
+            ToolStripDropDown menu)
+        {
+            base.AppendAdditionalComponentMenuItems(
+                menu);
+
+            ToolStripMenuItem justificationMenu =
+                new ToolStripMenuItem(
+                    "Justification");
+
+            foreach (
+                FabTextJustification justification
+                in Enum.GetValues(
+                    typeof(FabTextJustification)))
+            {
+                int value =
+                    (int)justification;
+
+                ToolStripMenuItem item =
+                    new ToolStripMenuItem(
+                        GetJustificationName(
+                            justification));
+
+                item.Checked =
+                    value == _justification;
+
+                item.Click += (
+                    sender,
+                    e) =>
+                {
+                    _justification =
+                        value;
+
+                    ExpireSolution(
+                        true);
+                };
+
+                justificationMenu.DropDownItems.Add(
+                    item);
+            }
+
+            menu.Items.Add(
+                justificationMenu);
+        }
+
+        private static string GetJustificationName(
+            FabTextJustification justification)
+        {
+            switch (justification)
+            {
+                case FabTextJustification.BottomLeft:
+                    return "Bottom Left";
+
+                case FabTextJustification.BottomCenter:
+                    return "Bottom Center";
+
+                case FabTextJustification.BottomRight:
+                    return "Bottom Right";
+
+                case FabTextJustification.MiddleLeft:
+                    return "Middle Left";
+
+                case FabTextJustification.MiddleCenter:
+                    return "Middle Center";
+
+                case FabTextJustification.MiddleRight:
+                    return "Middle Right";
+
+                case FabTextJustification.TopLeft:
+                    return "Top Left";
+
+                case FabTextJustification.TopCenter:
+                    return "Top Center";
+
+                case FabTextJustification.TopRight:
+                    return "Top Right";
+
+                default:
+                    return justification.ToString();
+            }
+        }
+
+        public override bool Write(
+            GH_IWriter writer)
+        {
+            writer.SetInt32(
+                "Justification",
+                _justification);
+
+            return base.Write(
+                writer);
+        }
+
+        public override bool Read(
+            GH_IReader reader)
+        {
+            if (reader.ItemExists(
+                "Justification"))
+            {
+                int value =
+                    reader.GetInt32(
+                        "Justification");
+
+                if (
+                    value >= 0 &&
+                    value <= 8)
+                {
+                    _justification =
+                        value;
+                }
+            }
+
+            return base.Read(
+                reader);
         }
 
         public override GH_Exposure Exposure
