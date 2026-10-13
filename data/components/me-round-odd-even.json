@@ -1,0 +1,78 @@
+{
+  "id": "me-round-odd-even",
+  "guid": "A63F2D91-4C87-4B25-9E16-73D8C5A204BF",
+  "name": "ME Round to Odd/Even",
+  "nickname": "ME Odd/Even",
+  "category": "Meanders",
+  "subcategory": "Utilities",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Round numbers to the nearest odd or even integer.",
+    "long": "Rounds one or more numbers to the nearest integer with a specified odd or even parity. Mode 0 selects an even result and Mode 1 selects an odd result."
+  },
+  "icon": "me-round-odd-even.png",
+  "inputs": [
+    {
+      "name": "Number",
+      "nickname": "N",
+      "type": "number",
+      "access": "list",
+      "optional": false,
+      "description": "Numbers to round to the nearest integer with the requested parity."
+    },
+    {
+      "name": "Mode",
+      "nickname": "M",
+      "type": "integer",
+      "access": "list",
+      "optional": true,
+      "description": "Requested integer parity. 0 = Even, 1 = Odd. If the list is shorter than Number, its last value is repeated."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Rounded",
+      "nickname": "R",
+      "type": "number",
+      "access": "list",
+      "description": "Numbers rounded to the nearest integer with the requested odd or even parity."
+    }
+  ],
+  "settings": [],
+  "errors": [
+    "Mode must be 0 (Even) or 1 (Odd).",
+    "Number cannot contain NaN or Infinity."
+  ],
+  "examples": [
+    {
+      "title": "Round to even",
+      "description": "Round numbers to the nearest even integer.",
+      "input": "[1.2, 2.7, 3.4] with M = 0",
+      "output": "[2, 2, 4]"
+    },
+    {
+      "title": "Round to odd",
+      "description": "Round numbers to the nearest odd integer.",
+      "input": "[1.2, 2.7, 3.4] with M = 1",
+      "output": "[1, 3, 3]"
+    },
+    {
+      "title": "Mode list with Repeat Last",
+      "description": "When the Mode list is shorter than Number, the last Mode value is repeated. Extra Mode values are ignored.",
+      "input": "Number = [1.2, 2.7, 3.4, 4.9], Mode = [0, 1]",
+      "output": "[2, 3, 4, 5]"
+    }
+  ],
+  "notes": [
+    "Mode 0 means Even.",
+    "Mode 1 means Odd.",
+    "Number is the master list and determines the number of output items.",
+    "If Mode contains fewer items than Number, the last Mode value is repeated.",
+    "If Mode contains more items than Number, extra Mode values are ignored.",
+    "The output always contains the same number of items as the Number input.",
+    "For values exactly halfway between two valid integers, the nearest valid integer is selected according to the requested parity.",
+    "The Number input accepts a list of numbers."
+  ],
+  "related": ["me-round-number"]
+}

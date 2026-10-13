@@ -1,0 +1,75 @@
+{
+  "id": "me-round-number",
+  "guid": "7B8D4F21-6C93-4A57-9E18-2F6D83B4A901",
+  "name": "ME Round Number",
+  "nickname": "ME Round",
+  "category": "Meanders",
+  "subcategory": "Utilities",
+  "status": "stable",
+  "introducedIn": "0.1.0",
+  "description": {
+    "short": "Round numbers to a specified number of decimal places.",
+    "long": "Rounds one or more numbers to a specified number of decimal places. Values exactly halfway between two results are rounded away from zero."
+  },
+  "icon": "me-round-number.png",
+  "inputs": [
+    {
+      "name": "Number",
+      "nickname": "N",
+      "type": "number",
+      "access": "list",
+      "optional": false,
+      "description": "Numbers to round."
+    },
+    {
+      "name": "Decimal Places",
+      "nickname": "D",
+      "type": "integer",
+      "access": "item",
+      "optional": true,
+      "description": "Number of decimal places to keep."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "Rounded",
+      "nickname": "R",
+      "type": "number",
+      "access": "list",
+      "description": "Rounded numbers."
+    }
+  ],
+  "settings": [],
+  "errors": [
+    "Decimal Places cannot be negative.",
+    "Decimal Places must be between 0 and 15.",
+    "Number cannot contain NaN or Infinity."
+  ],
+  "examples": [
+    {
+      "title": "Round to two decimal places",
+      "description": "Round a number to two decimal places.",
+      "input": "12.34567 with D = 2",
+      "output": "12.35"
+    },
+    {
+      "title": "Round multiple numbers",
+      "description": "Round a list of numbers using the same decimal-place setting.",
+      "input": "[12.345, 8.999, 3.14159] with D = 2",
+      "output": "[12.35, 9.00, 3.14]"
+    },
+    {
+      "title": "Halfway values",
+      "description": "Values exactly halfway between two results are rounded away from zero.",
+      "input": "1.125 with D = 2",
+      "output": "1.13"
+    }
+  ],
+  "notes": [
+    "Decimal Places defaults to 2.",
+    "Decimal Places must be an integer between 0 and 15.",
+    "Rounding uses MidpointRounding.AwayFromZero.",
+    "The Number input accepts a list of numbers."
+  ],
+  "related": ["me-round-odd-even"]
+}
