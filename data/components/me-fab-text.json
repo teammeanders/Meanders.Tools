@@ -6,7 +6,7 @@
   "category": "Meanders",
   "subcategory": "Fabrication",
   "status": "stable",
-  "introducedIn": "0.1.0",
+  "introducedIn": "0.2.0",
   "description": {
     "short": "Create fabrication-ready text geometry.",
     "long": "Creates fabrication-ready text curves on a plane using the Meanders fabrication glyph library. Supported characters are converted directly to lightweight geometric curves. Fabrication markers can be embedded in the text using AR tokens for directional arrows and EG tokens for edge-banding markers."

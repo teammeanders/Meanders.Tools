@@ -6,7 +6,7 @@
   "category": "Meanders",
   "subcategory": "Utilities",
   "status": "stable",
-  "introducedIn": "0.1.0",
+  "introducedIn": "0.2.0",
   "description": {
     "short": "Round numbers to a specified number of decimal places.",
     "long": "Rounds one or more numbers to a specified number of decimal places. Values exactly halfway between two results are rounded away from zero."

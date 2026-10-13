@@ -4,6 +4,39 @@ All notable changes to Meanders.Tools will be documented in this file.
 
 The project follows Semantic Versioning.
 
+## [0.2.0] - 2026-10-13
+
+### Added
+
+- `ME Fab Text` component for creating fabrication-ready text geometry
+- `ME Round Number` component for rounding numbers to a specified number of decimal places
+- `ME Round to Odd/Even` component for rounding numbers to the nearest odd or even integer
+- `ME Bake` component for baking geometry into Rhino with Meanders attributes
+- New component icons for the added components
+- Parameter documentation pages for `ME Attribute` and `ME Object`
+- Component registry table for tracking component implementation and documentation status
+
+### Changed
+
+- Refined the canonical icon design system for Grasshopper-native Meanders component icons
+- Moved the icon design system into GPT Knowledge so icon generation can use a stable visual source of truth
+- Updated the icon-generation workflow to read component-specific metadata from GitHub
+- Improved semantic icon generation rules so component examples are not treated as visual subjects
+- Updated `ME Bake` behavior so baking is triggered only by a false-to-true transition of the Bake input
+- Added optional branch grouping behavior to `ME Bake`, enabled by default
+- Restored parameter documentation routing under `/parameters/[id]`
+
+### Fixed
+
+- Restored missing parameter documentation pages that were previously removed from the documentation site
+- Prevented `ME Bake` from baking repeatedly when Grasshopper recomputes the component while Bake remains enabled
+
+### Notes
+
+- This release continues to target Rhino 7 / Grasshopper 7 on Windows.
+- Distribution remains internal.
+- GitHub Releases are used for the current downloadable build.
+
 ## [0.1.0] - 2026-09-30
 
 ### Added

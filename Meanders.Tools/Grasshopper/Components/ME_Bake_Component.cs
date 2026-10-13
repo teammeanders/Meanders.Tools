@@ -29,7 +29,6 @@ namespace Meanders.Tools.Grasshopper.Components
                 "Meanders",
                 "Objects")
         {
-            Attributes = new ME_Bake_ComponentAttributes(this);
         }
 
         protected override void RegisterInputParams(
@@ -96,21 +95,6 @@ namespace Meanders.Tools.Grasshopper.Components
                     ? attributeGoo.Value.Duplicate()
                     : new ME_Attribute();
 
-            /*
-             * Bake is edge-triggered.
-             *
-             * False -> True:
-             *     Bake once.
-             *
-             * True -> True:
-             *     Do not bake again when Grasshopper recomputes.
-             *
-             * True -> False:
-             *     Reset the trigger.
-             *
-             * This prevents connecting wires or changing other inputs
-             * from accidentally creating additional Rhino objects.
-             */
             if (!bake)
             {
                 _previousBakeState = false;
@@ -122,16 +106,12 @@ namespace Meanders.Tools.Grasshopper.Components
                     0,
                     _lastMessage);
 
-            GH_Structure<IGH_Goo> geometryTree = null;
-            ME_Attribute_Goo attributeGoo = null;
-
-            if (!Params.Input[0].VolatileData.AllData(true).GetEnumerator().MoveNext())
-            {
-                _lastMessage = "No geometry to bake.";
-                ExpireSolution(true);
                 return;
             }
 
+            // Bake only on a false -> true transition.
+            // Recomputing the component while Bake remains true
+            // must never bake the geometry again.
             if (_previousBakeState)
             {
                 _lastMessage =
@@ -142,7 +122,6 @@ namespace Meanders.Tools.Grasshopper.Components
                     _lastMessage);
 
                 return;
-                }
             }
 
             _previousBakeState = true;
@@ -262,7 +241,7 @@ namespace Meanders.Tools.Grasshopper.Components
             {
                 return string.Format(
                     "Baked {0} object{1}.",
-                        bakedCount,
+                    bakedCount,
                     bakedCount == 1
                         ? ""
                         : "s");
@@ -316,6 +295,7 @@ namespace Meanders.Tools.Grasshopper.Components
                 return new ME_Object(
                     ghPoint.Value);
             }
+
             if (goo is GH_Curve curve)
             {
                 return new ME_Object(
@@ -407,8 +387,8 @@ namespace Meanders.Tools.Grasshopper.Components
             {
                 objectId =
                     doc.Objects.AddCurve(
-                    rectangle.ToNurbsCurve(),
-                    attributes);
+                        rectangle.ToNurbsCurve(),
+                        attributes);
 
                 return
                     objectId != Guid.Empty;
@@ -419,21 +399,17 @@ namespace Meanders.Tools.Grasshopper.Components
 
         protected override void
             AppendAdditionalComponentMenuItems(
-            ToolStripDropDown menu)
+                ToolStripDropDown menu)
         {
             base.AppendAdditionalComponentMenuItems(
                 menu);
 
-            ToolStripMenuItem groupItem =
-                Menu_AppendItem(
-                    menu,
-                    "Group branch items",
-                    Menu_GroupBranchItems,
-                    true,
-                    _groupBranchItems);
-
-            groupItem.ToolTipText =
-                "Bake all items from each Grasshopper branch into one Rhino group.";
+            Menu_AppendItem(
+                menu,
+                "Group branch items",
+                Menu_GroupBranchItems,
+                true,
+                _groupBranchItems);
         }
 
         private void Menu_GroupBranchItems(
@@ -481,88 +457,6 @@ namespace Meanders.Tools.Grasshopper.Components
                 return new Guid(
                     "9D1C4E72-5A83-4F16-B8D9-27C6E0A5413F");
             }
-        }
-    }
-
-    internal class ME_Bake_ComponentAttributes : GH_ComponentAttributes
-    {
-        private Rectangle _bakeButtonBounds;
-
-        public ME_Bake_ComponentAttributes(
-            ME_Bake_Component owner)
-            : base(owner)
-        {
-        }
-
-        protected override void Layout()
-        {
-            base.Layout();
-
-            Rectangle bounds = Bounds;
-
-            _bakeButtonBounds =
-                new Rectangle(
-                    bounds.X + 4,
-                    bounds.Bottom - 24,
-                    bounds.Width - 8,
-                    18);
-
-            Bounds =
-                new Rectangle(
-                    bounds.X,
-                    bounds.Y,
-                    bounds.Width,
-                    bounds.Height + 22);
-        }
-
-        protected override void Render(
-            GH_Canvas canvas,
-            System.Drawing.Graphics graphics,
-            GH_CanvasChannel channel)
-        {
-            base.Render(canvas, graphics, channel);
-
-            if (channel != GH_CanvasChannel.Objects)
-                return;
-
-            var owner =
-                Owner as ME_Bake_Component;
-
-            if (owner == null)
-                return;
-
-            GH_Capsule button =
-                GH_Capsule.CreateTextCapsule(
-                    _bakeButtonBounds,
-                    "Bake");
-
-            button.Render(
-                graphics,
-                Selected,
-                owner.Locked,
-                false);
-
-            button.Dispose();
-        }
-
-        public override GH_ObjectResponse RespondToMouseDown(
-            GH_Canvas sender,
-            GH_CanvasMouseEvent e)
-        {
-            if (e.Button == MouseButtons.Left &&
-                _bakeButtonBounds.Contains(e.CanvasLocation))
-            {
-                var owner =
-                    Owner as ME_Bake_Component;
-
-                if (owner != null && !owner.Locked)
-                {
-                    owner.BakeFromButton();
-                    return GH_ObjectResponse.Handled;
-                }
-            }
-
-            return base.RespondToMouseDown(sender, e);
         }
     }
 }

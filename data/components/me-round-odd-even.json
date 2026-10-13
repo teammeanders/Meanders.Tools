@@ -6,7 +6,7 @@
   "category": "Meanders",
   "subcategory": "Utilities",
   "status": "stable",
-  "introducedIn": "0.1.0",
+  "introducedIn": "0.2.0",
   "description": {
     "short": "Round numbers to the nearest odd or even integer.",
     "long": "Rounds one or more numbers to the nearest integer with a specified odd or even parity. Mode 0 selects an even result and Mode 1 selects an odd result."
