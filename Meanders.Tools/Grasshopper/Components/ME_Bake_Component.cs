@@ -20,6 +20,7 @@ namespace Meanders.Tools.Grasshopper.Components
     {
         private bool _groupBranchItems = true;
         private string _lastMessage = "Ready";
+        private bool _suppressNextAutoBake = false;
 
         public ME_Bake_Component()
             : base(
@@ -87,6 +88,13 @@ namespace Meanders.Tools.Grasshopper.Components
                     ? attributeGoo.Value.Duplicate()
                     : new ME_Attribute();
 
+            if (_suppressNextAutoBake)
+            {
+                _suppressNextAutoBake = false;
+                DA.SetData(0, _lastMessage);
+                return;
+            }
+
             if (!bake)
             {
                 _lastMessage = "Bake input is false.";
@@ -146,6 +154,7 @@ namespace Meanders.Tools.Grasshopper.Components
                     : new ME_Attribute();
 
             BakeTree(data, defaultAttribute);
+            _suppressNextAutoBake = true;
             ExpireSolution(true);
         }
 
@@ -339,6 +348,18 @@ namespace Meanders.Tools.Grasshopper.Components
         {
             _groupBranchItems = !_groupBranchItems;
             ExpireSolution(true);
+        }
+
+        public override bool Write(GH_IWriter writer)
+        {
+            writer.SetBoolean("GroupBranchItems", _groupBranchItems);
+            return base.Write(writer);
+        }
+
+        public override bool Read(GH_IReader reader)
+        {
+            reader.TryGetBoolean("GroupBranchItems", ref _groupBranchItems);
+            return base.Read(reader);
         }
 
         public bool GroupBranchItems
