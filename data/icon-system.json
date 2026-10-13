@@ -1,8 +1,8 @@
 {
-  "version": 3,
+  "version": 4,
   "canonical": true,
   "references": {
-    "visualLanguage": "Grasshopper-native",
+    "visualLanguage": "Grasshopper-native pseudo-3D",
     "sourceExamples": [
       "Arc",
       "Attach Attributes",
@@ -15,7 +15,8 @@
       "Geometry Pipeline",
       "Geometry",
       "Curve"
-    ]
+    ],
+    "visualDirection": "Use the existing Grasshopper visual language as the structural foundation, enhanced with controlled pseudo-3D depth, bevels, highlights, shadows, and compact glossy surfaces."
   },
   "canvas": {
     "grasshopper": {
@@ -30,12 +31,10 @@
     }
   },
   "occupancy": {
-    "targetPercent": 80,
-    "acceptableRangePercent": [
-      75,
-      85
-    ],
-    "excessiveEmptySpaceAllowed": false
+    "targetPercent": 82,
+    "acceptableRangePercent": [75, 88],
+    "excessiveEmptySpaceAllowed": false,
+    "rule": "The semantic composition should occupy most of the canvas while preserving a controlled safe margin. Do not leave large unused areas."
   },
   "colors": {
     "accent": "#F59E0B",
@@ -43,31 +42,68 @@
     "accentLight": "#FEF3C7",
     "accentDark": "#D97706",
     "outline": "#15191D",
-    "neutralLight": "#FFFFFF"
+    "neutralLight": "#FFFFFF",
+    "neutralMid": "#D9DDE2",
+    "neutralDark": "#4B525A",
+    "shadow": "#15191D"
   },
   "stroke": {
     "primaryPxAt24": 2,
-    "minorPxAt24": [
-      1,
-      1.5
-    ],
+    "minorPxAt24": [1, 1.5],
     "darkOutlineRequired": true,
     "pixelGridPreferred": true,
-    "avoidNearHorizontalOrVerticalAngles": true
+    "avoidNearHorizontalOrVerticalAngles": true,
+    "outlineRule": "Use a strong dark outline to preserve the Grasshopper-native silhouette.",
+    "consistencyRequired": true
   },
   "style": {
     "grasshopperNative": true,
-    "pseudo3D": "subtle",
+    "rendering": "controlled-pseudo-3d",
+    "pseudo3D": "visible-but-restrained",
     "flatAppIconLookAllowed": false,
-    "glossyEffectsAllowed": false,
+    "modernWebIconLookAllowed": false,
+    "glossyEffectsAllowed": true,
+    "glossyEffects": "controlled",
+    "bevelsAllowed": true,
+    "bevels": "subtle-functional",
+    "highlightsAllowed": true,
+    "highlights": "small-and-controlled",
+    "shadowsAllowed": true,
+    "shadows": "soft-and-controlled",
+    "gradientsAllowed": true,
+    "gradientRule": "Use gradients only when they reinforce surface depth or beveling. Never use gradients as decoration.",
     "textAllowed": false,
     "decorativeEffectsAllowed": false,
-    "subtleGradientOnlyWhenUseful": true,
     "strongSilhouetteRequired": true,
-    "primitiveCountGuideline": [
-      2,
-      4
-    ]
+    "compactCompositionRequired": true,
+    "primitiveCountGuideline": [2, 6],
+    "depthMustSupportMeaning": true,
+    "rule": "Pseudo-3D treatment is part of the visual language, but depth must support the semantic object rather than become the subject."
+  },
+  "visualHierarchy": {
+    "rule": "Every icon must have one dominant semantic object or operation.",
+    "primaryObject": {
+      "required": true,
+      "visualPriority": 1,
+      "mustCommunicateFunction": true
+    },
+    "supportingObject": {
+      "allowed": true,
+      "maximum": 1,
+      "visualPriority": 2,
+      "mustSupportPrimaryFunction": true
+    },
+    "decorativeObject": {
+      "allowed": false
+    },
+    "unrelatedObject": {
+      "allowed": false
+    },
+    "overlap": {
+      "allowed": true,
+      "preferredWhenUseful": true,
+      "rule": "Overlapping semantic objects may be used to communicate attachment, transformation, hierarchy, layering, or interaction."
+    }
   },
   "semanticInterpretation": {
     "sourceOfTruth": "component-documentation-json",
@@ -75,12 +111,17 @@
     "rule": "The icon must communicate what the component does, not merely which category it belongs to.",
     "categoryIsNotMeaning": true,
     "workflow": [
-      "Read the component documentation JSON.",
+      "Read the complete component documentation JSON.",
       "Identify the component's primary functional purpose.",
-      "Identify the strongest visual representation of that purpose.",
+      "Identify the main input, operation, and output relationship.",
+      "Identify the strongest visual representation of that function.",
+      "Choose one dominant semantic concept.",
       "Optionally add at most one supporting concept.",
-      "Reduce the result to a strong Grasshopper-native silhouette.",
-      "Validate the concept at 24x24 before producing the documentation version."
+      "Use the visual hierarchy rules.",
+      "Apply the Grasshopper-native pseudo-3D visual language.",
+      "Reduce unnecessary geometry.",
+      "Validate the result at 24x24.",
+      "Only then produce the documentation version."
     ],
     "functionalCategories": [
       "geometry-creation",
@@ -106,6 +147,8 @@
     "primaryConceptMustComeFromDocumentation": true,
     "doNotInventUnrelatedVisualMetaphors": true,
     "doNotUseComponentNameAsVisualConcept": true,
+    "doNotUseLiteralNameRepresentation": true,
+    "functionOverDecoration": true,
     "examples": {
       "me-fab-text": {
         "primaryConcept": "geometric-fabrication-text",
@@ -120,6 +163,17 @@
           "generic-manufacturing-symbol"
         ],
         "guidance": "Represent the actual geometric text function using simplified glyph-like geometric strokes. Fabrication context may support the concept but must not replace the primary text-geometry concept."
+      },
+      "me-round-number": {
+        "primaryConcept": "numeric-rounding-transformation",
+        "secondaryConcept": "precision-control",
+        "avoid": [
+          "generic-calculator",
+          "clock",
+          "generic-number-badge",
+          "unrelated-control-panel"
+        ],
+        "guidance": "Represent the transformation from a more precise numeric value to a rounded value. Use a compact semantic relationship rather than a literal calculator interface."
       }
     }
   },
@@ -149,12 +203,16 @@
     "palette": "amber-orange",
     "semanticObjectRequired": true,
     "maxSupportingConcepts": 1,
+    "pseudo3DRequired": true,
+    "glossyTreatmentAllowed": true,
+    "bevelTreatmentAllowed": true,
     "examples": {
       "me-attribute": "attribute/tag/property symbol",
       "me-attach-attribute": "geometry + attach/link/add",
       "me-detach-geometry": "geometry + separation",
       "me-unit-converter": "measurement/ruler + two-way conversion",
-      "me-fab-text": "geometric text + fabrication notation"
+      "me-fab-text": "geometric text + fabrication notation",
+      "me-round-number": "numeric precision + rounding transformation"
     }
   },
   "parameter": {
@@ -173,6 +231,102 @@
       "me-object-param": "shared dark shell + generic object/geometry glyph"
     }
   },
+  "composition": {
+    "rule": "Build the icon around a single clear semantic composition.",
+    "primaryConceptCount": 1,
+    "supportingConceptCountMaximum": 1,
+    "decorativeConceptCount": 0,
+    "preferredRelationships": [
+      "transformation",
+      "attachment",
+      "separation",
+      "containment",
+      "comparison",
+      "direction",
+      "generation",
+      "analysis",
+      "conversion"
+    ],
+    "overlappingObjectsAllowed": true,
+    "overlappingObjectsShouldBeSemantic": true,
+    "visualStoryRequired": true,
+    "ruleForVisualStory": "If the component transforms, attaches, separates, converts, generates, or analyzes something, prefer showing that relationship visually instead of adding unrelated symbols."
+  },
+  "simplification": {
+    "required": true,
+    "rule": "Remove every primitive that does not contribute to recognition of the primary function.",
+    "maximumCompetingConcepts": 1,
+    "avoid": [
+      "visual clutter",
+      "multiple unrelated symbols",
+      "decorative badges",
+      "complex UI layouts",
+      "literal interfaces",
+      "excessive depth",
+      "excessive reflections",
+      "excessive shadows",
+      "duplicate geometry"
+    ]
+  },
+  "arrows": {
+    "allowed": true,
+    "semanticRequired": true,
+    "rule": "An arrow must communicate a real transformation, direction, flow, movement, or relationship.",
+    "genericArrowAsDecoration": false,
+    "duplicateArrowStrokes": false,
+    "overlappingArrowStrokes": false,
+    "maximumPrimaryArrows": 1,
+    "style": "compact-and-integrated",
+    "avoid": [
+      "large-dominant-arrows",
+      "decorative-arrows",
+      "multiple-arrows-without-semantic-need"
+    ]
+  },
+  "depth": {
+    "enabled": true,
+    "style": "controlled-pseudo-3d",
+    "surfaceSeparationAllowed": true,
+    "bevelAllowed": true,
+    "highlightAllowed": true,
+    "shadowAllowed": true,
+    "softShadowPreferred": true,
+    "depthHierarchy": [
+      "primary-semantic-object",
+      "supporting-semantic-object",
+      "surface-highlight",
+      "controlled-shadow"
+    ],
+    "rule": "Depth should clarify object hierarchy and physical form. It must never obscure the semantic relationship."
+  },
+  "surfaceTreatment": {
+    "primarySurfaces": ["white", "light-neutral", "accent"],
+    "outline": "dark",
+    "bevel": "subtle",
+    "highlight": "small",
+    "shadow": "soft",
+    "gloss": "restrained",
+    "metallicLook": "allowed only when semantically useful",
+    "plasticLook": "allowed only when semantically useful",
+    "rule": "Surface treatment should make simple geometry feel dimensional without turning the icon into a product render."
+  },
+  "background": {
+    "required": "transparent",
+    "alphaRequired": true,
+    "checkerboardAllowedInsideExport": false,
+    "checkerboardIsPreviewOnly": true,
+    "whiteBackgroundAllowed": false,
+    "coloredBackgroundAllowed": false
+  },
+  "antiAppIcon": {
+    "flatAppIconLookAllowed": false,
+    "modernDashboardLookAllowed": false,
+    "UIContainerLookAllowed": false,
+    "badgeLookAllowed": false,
+    "cardLookAllowed": false,
+    "buttonLookAllowed": false,
+    "rule": "The icon may be glossy and pseudo-3D, but it must remain a compact Grasshopper component icon rather than a UI/app icon."
+  },
   "naming": {
     "basePattern": "me-<name>",
     "masterPattern": "me-<name>.svg",
@@ -183,26 +337,56 @@
     "exactDimensionsRequired": true,
     "transparentPngRequired": true,
     "designFor24First": true,
-    "simpleDownscaleOnly": false
+    "simpleDownscaleOnly": false,
+    "requiredExports": ["24x24 Grasshopper PNG", "300x300 documentation PNG"],
+    "masterVectorRequired": true,
+    "masterVectorFormat": "SVG"
+  },
+  "qualityControl": {
+    "semanticClarity": "mandatory",
+    "visualConsistency": "mandatory",
+    "24pxReadability": "mandatory",
+    "occupancyCheck": "mandatory",
+    "transparencyCheck": "mandatory",
+    "filenameCheck": "mandatory",
+    "exportDimensionCheck": "mandatory",
+    "duplicateStrokeCheck": "mandatory",
+    "unnecessaryPrimitiveCheck": "mandatory",
+    "appIconAestheticCheck": "mandatory"
   },
   "checklist": [
     "read-component-documentation-first",
+    "read-complete-icon-system",
     "identify-primary-functional-purpose",
+    "identify-input-operation-output",
     "category-is-context-not-primary-meaning",
     "choose-one-strong-semantic-concept",
     "use-at-most-one-supporting-concept",
     "do-not-use-generic-category-symbol",
-    "correct-semantic-concept",
-    "clear-at-24x24",
-    "occupancy-between-75-and-85-percent",
-    "consistent-safe-margin",
+    "do-not-use-unrelated-symbols",
+    "use-controlled-pseudo-3d",
+    "use-subtle-bevel-when-useful",
+    "use-controlled-highlights",
+    "use-controlled-soft-shadows",
+    "do-not-create-app-icon-look",
+    "do-not-create-ui-card-look",
+    "no-excessive-gloss",
+    "no-excessive-depth",
+    "no-decorative-effects",
+    "arrows-have-semantic-purpose",
+    "no-duplicate-arrow-strokes",
+    "strong-silhouette",
+    "high-occupancy",
+    "occupancy-between-75-and-88-percent",
+    "controlled-safe-margin",
     "transparent-background",
+    "real-alpha-transparency",
+    "no-checkerboard-in-export",
     "accent-is-F59E0B",
     "dark-outline-present",
     "grasshopper-native-style",
-    "strong-silhouette",
-    "no-text",
-    "no-readable-labels",
+    "24x24-first",
+    "clear-at-24x24",
     "minimal-detail",
     "component-vs-param-grammar-correct",
     "correct-filename",
