@@ -19,7 +19,6 @@ namespace Meanders.Tools.Grasshopper.Components
     {
         private bool _groupBranchItems = true;
         private string _lastMessage = "Ready";
-        private bool _previousBakeState = false;
 
         public ME_Bake_Component()
             : base(
@@ -81,36 +80,76 @@ namespace Meanders.Tools.Grasshopper.Components
             DA.GetData(1, ref attributeGoo);
             DA.GetData(2, ref bake);
 
-            ME_Attribute attribute =
+            ME_Attribute defaultAttribute =
                 attributeGoo != null && attributeGoo.Value != null
                     ? attributeGoo.Value.Duplicate()
                     : new ME_Attribute();
 
             if (!bake)
             {
-                _previousBakeState = false;
                 _lastMessage = "Bake input is false.";
                 DA.SetData(0, _lastMessage);
+                ExpireLayout();
                 return;
             }
 
-            // Bake only when Bake changes from false to true.
-            // Other Grasshopper recomputes do not bake again while it remains true.
-            if (!_previousBakeState)
-            {
-                _lastMessage =
-                    BakeTree(
-                        geometryTree,
-                        attribute);
-            }
-            else
-            {
-                _lastMessage = "Ready to bake.";
-            }
-
-            _previousBakeState = true;
-
+            BakeTree(geometryTree, defaultAttribute);
             DA.SetData(0, _lastMessage);
+            ExpireLayout();
+        }
+
+        public void BakeFromButton()
+        {
+            if (Params.Input.Count == 0)
+                return;
+
+            GH_Structure<IGH_Goo> geometryTree = null;
+            ME_Attribute_Goo attributeGoo = null;
+
+            if (!Params.Input[0].VolatileData.AllData(true).GetEnumerator().MoveNext())
+            {
+                _lastMessage = "No geometry to bake.";
+                ExpireSolution(true);
+                return;
+            }
+
+            var data = new GH_Structure<IGH_Goo>();
+
+            foreach (IGH_Path path in Params.Input[0].VolatileData.Paths)
+            {
+                IList branch = Params.Input[0].VolatileData.get_Branch(path);
+                GH_Path ghPath = path as GH_Path;
+
+                if (ghPath == null)
+                    continue;
+
+                foreach (object item in branch)
+                {
+                    if (item is IGH_Goo goo)
+                        data.Append(goo, ghPath);
+                }
+            }
+
+            if (Params.Input.Count > 1)
+            {
+                var attrData = Params.Input[1].VolatileData.AllData(true);
+                foreach (object item in attrData)
+                {
+                    if (item is ME_Attribute_Goo goo)
+                    {
+                        attributeGoo = goo;
+                        break;
+                    }
+                }
+            }
+
+            ME_Attribute defaultAttribute =
+                attributeGoo != null && attributeGoo.Value != null
+                    ? attributeGoo.Value.Duplicate()
+                    : new ME_Attribute();
+
+            BakeTree(data, defaultAttribute);
+            ExpireSolution(true);
         }
 
         private void BakeTree(
@@ -333,4 +372,85 @@ namespace Meanders.Tools.Grasshopper.Components
         }
     }
 
+    internal class ME_Bake_ComponentAttributes : GH_ComponentAttributes
+    {
+        private Rectangle _bakeButtonBounds;
+
+        public ME_Bake_ComponentAttributes(
+            ME_Bake_Component owner)
+            : base(owner)
+        {
+        }
+
+        protected override void Layout()
+        {
+            base.Layout();
+
+            Rectangle bounds = Bounds;
+
+            _bakeButtonBounds =
+                new Rectangle(
+                    bounds.X + 4,
+                    bounds.Bottom - 24,
+                    bounds.Width - 8,
+                    18);
+
+            Bounds =
+                new Rectangle(
+                    bounds.X,
+                    bounds.Y,
+                    bounds.Width,
+                    bounds.Height + 22);
+        }
+
+        protected override void Render(
+            GH_Canvas canvas,
+            System.Drawing.Graphics graphics,
+            GH_CanvasChannel channel)
+        {
+            base.Render(canvas, graphics, channel);
+
+            if (channel != GH_CanvasChannel.Objects)
+                return;
+
+            var owner =
+                Owner as ME_Bake_Component;
+
+            if (owner == null)
+                return;
+
+            GH_Capsule button =
+                GH_Capsule.CreateTextCapsule(
+                    _bakeButtonBounds,
+                    "Bake");
+
+            button.Render(
+                graphics,
+                Selected,
+                owner.Locked,
+                false);
+
+            button.Dispose();
+        }
+
+        public override GH_ObjectResponse RespondToMouseDown(
+            GH_Canvas sender,
+            GH_CanvasMouseEvent e)
+        {
+            if (e.Button == MouseButtons.Left &&
+                _bakeButtonBounds.Contains(e.CanvasLocation))
+            {
+                var owner =
+                    Owner as ME_Bake_Component;
+
+                if (owner != null && !owner.Locked)
+                {
+                    owner.BakeFromButton();
+                    return GH_ObjectResponse.Handled;
+                }
+            }
+
+            return base.RespondToMouseDown(sender, e);
+        }
+    }
 }
