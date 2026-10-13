@@ -1,4 +1,5 @@
 using Grasshopper.Kernel;
+using Grasshopper.GUI.Canvas;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using Meanders.Tools.Core;
@@ -55,6 +56,7 @@ namespace Meanders.Tools.Grasshopper.Components
                 true);
 
             pManager[1].Optional = true;
+            pManager[1].PersistentData.Append(new ME_Attribute_Goo());
         }
 
         protected override void RegisterOutputParams(
@@ -89,13 +91,13 @@ namespace Meanders.Tools.Grasshopper.Components
             {
                 _lastMessage = "Bake input is false.";
                 DA.SetData(0, _lastMessage);
-                ExpireLayout();
+                ExpireSolution(true);
                 return;
             }
 
             BakeTree(geometryTree, defaultAttribute);
             DA.SetData(0, _lastMessage);
-            ExpireLayout();
+            ExpireSolution(true);
         }
 
         public void BakeFromButton()
@@ -115,18 +117,13 @@ namespace Meanders.Tools.Grasshopper.Components
 
             var data = new GH_Structure<IGH_Goo>();
 
-            foreach (IGH_Path path in Params.Input[0].VolatileData.Paths)
+            foreach (GH_Path path in Params.Input[0].VolatileData.Paths)
             {
                 IList branch = Params.Input[0].VolatileData.get_Branch(path);
-                GH_Path ghPath = path as GH_Path;
-
-                if (ghPath == null)
-                    continue;
-
                 foreach (object item in branch)
                 {
                     if (item is IGH_Goo goo)
-                        data.Append(goo, ghPath);
+                        data.Append(goo, path);
                 }
             }
 
@@ -388,19 +385,19 @@ namespace Meanders.Tools.Grasshopper.Components
 
             Rectangle bounds = Bounds;
 
-            _bakeButtonBounds =
-                new Rectangle(
-                    bounds.X + 4,
-                    bounds.Bottom - 24,
-                    bounds.Width - 8,
-                    18);
-
             Bounds =
                 new Rectangle(
                     bounds.X,
                     bounds.Y,
                     bounds.Width,
                     bounds.Height + 22);
+
+            _bakeButtonBounds =
+                new Rectangle(
+                    Bounds.X + 4,
+                    Bounds.Bottom - 20,
+                    Bounds.Width - 8,
+                    16);
         }
 
         protected override void Render(
@@ -422,7 +419,11 @@ namespace Meanders.Tools.Grasshopper.Components
             GH_Capsule button =
                 GH_Capsule.CreateTextCapsule(
                     _bakeButtonBounds,
-                    "Bake");
+                    _bakeButtonBounds,
+                    GH_Palette.Black,
+                    "Bake",
+                    2,
+                    0);
 
             button.Render(
                 graphics,
